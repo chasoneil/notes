@@ -1,7 +1,7 @@
 package com.chason.linkedlist;
 
 /**
- * 使用双向链表实现 stack  and queue
+ * 使用双向链表实现 stackAndQueue  and queue
  */
 public class Code03_LinkedlistStackAndQueue {
 
