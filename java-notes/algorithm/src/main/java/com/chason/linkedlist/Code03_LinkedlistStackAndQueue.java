@@ -95,7 +95,7 @@ public class Code03_LinkedlistStackAndQueue {
 
         }
 
-        public void add(int value) {
+        public void push(int value) {
             DoubleEndsStructure.addFromHead(value);
         }
 
@@ -108,12 +108,12 @@ public class Code03_LinkedlistStackAndQueue {
     public static class MyQueue{
         public MyQueue() {}
 
-        public void add(int value) {
+        public void push(int value) {
             DoubleEndsStructure.addFromHead(value);
         }
 
 
-        public int push() {
+        public int poll() {
             return DoubleEndsStructure.getFromTail();
         }
     }
