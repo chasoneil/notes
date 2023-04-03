@@ -382,3 +382,179 @@ hippo4j 可以对线程池进行监控，而且和 springboot整合
   treeifyBin 方法触发扩容，同时帮助扩容
 
 * 计数器优化
+
+
+
+
+
+### MyBatis
+
+#### 1. 工作原理
+
+
+
+> MyBatis 使用
+
+* 需要添加依赖
+* 需要全局配置文件
+* 需要映射文件 
+
+
+
+> 初始化流程
+
+mybatis-demo
+
+* 系统启动，加载解析全局配置文件和对应的映射文件， 构建Configuration
+* 通过配置，构建 SqlSessionFactory
+* 通过factory ，构建sqlSession
+  * 通过 sqlSession中提供的API进行操作数据库
+  * 通过 sqlSession 创建一个代理对象调用我们自己的接口去操作数据库
+* session 具体是通过executor执行器进行SQL的处理，底层调用的JDBC
+  * ParameterHandler进行参数的相关处理
+  * StatementHandler进行SQL语句的处理
+  * ResultHandler处理返回的结果
+* 使用完毕之后，关闭session
+
+
+
+
+
+#### 2. Mybatis 缓存
+
+> MyBatis 中的缓存架构设计
+
+* 源码是 org.apache.ibatis.cache 中
+* 提供了一个接口 Cache ，接口中提供了实现 getObject putObject
+* 当然也提供了一个默认实现 PerpetualCache 是基于内存的实现 HashMap
+* mybatis通过装饰器模式提供了各种各样的cache
+
+> MyBatis的一级缓存和二级缓存
+
+* 一级缓存默认开启  session 级别
+  * 默认开启，可以手动关闭
+* 二级缓存是 sqlsessionFactory 级别 （进程级别）
+  * 二级缓存需要手动开启
+    * 需要配置文件中开启开关
+    * mapper中需要使用cache标签
+* 都开启的情况下，mybatis先走二级缓存再走一级缓存
+  * 一级和二级缓存的作用域不同，二级缓存命中的概率远大于一级缓存
+  * 如果是先一级缓存再去二级缓存会一定程度上降低性能
+
+
+
+#### 3. 扩展Mybatis缓存
+
+* MyBatis 默认提供 了一个Cache接口， 接口中提供了 对缓存数据的操作方法
+
+* 我们可以通过扩展实现这个接口  实现getObject  实现putObject 
+
+* 我们正常的过程中，如果不想使用系统默认的缓存，那么我们可以引入对应的包
+
+  比如myabtis-redis，通过他们提供的具体实现接口去做对应的操作
+
+* 我们自己实现了getObject 和 putObjectg 之后 需要在配置文件中的cache标签中的type配置自己的配置类完整路径
+
+
+
+
+
+#### 4. MyBatis 设计模式
+
+> 基础模块
+
+* 缓存模块
+  * 装饰器模式
+* 日志模块
+  * 适配器模式 【策略模式】
+  * 代理模式  进行日志功能的增强
+* 反射模块
+  * 单例模式
+  * 工厂模式
+* SqlSessionFactory 
+  * 建造者模式
+
+
+
+#### 5. SqlSessionFactory
+
+* MyBatis 核心 API,
+* 本身是单例，使用工厂模式和建造者模式构建 SqlSession
+
+
+
+#### 6. SqlSession
+
+sqlSession 是 MyBatis中的接口，内部提供了关于CRUD的各种方法
+
+* 本身是一个会话级别的参数
+* 可以通过 内部提供的接口 通过JDBC处理数据
+* 也可以通过 getMapper 获取代理对象来处理
+
+
+
+
+
+#### 7. Mybatis 分页原理
+
+Mybatis 中的分页有两种实现
+
+* 逻辑分页： RowBounds
+  * 本质上并不是分页查询，而是将所有的数据全部查出来，再对数据进行分页
+  * 消耗的内存很大，可能会引发OOM，对性能的影响也很大，一般不推荐使用
+* 物理分页： 拦截器实现
+  * 通过配置文件中使用拦截器，最常用的就是pageHelper
+  * pageHelper会对 Executor 中的 query 操作进行拦截，各种参数类型都会被拦截
+  * 底层还是通过mysql limit 的一个sql改写去完成的分页
+
+
+
+####  8. SqlSession 的安全问题
+
+
+
+SqlSession 的默认实现类是 DefaultSqlSession ， 而这个类是线程非安全的， Spring 中解决了这个问题
+
+最好的方式是每个线程都要有一个sqlsession实例，因为他不是线程安全的，所以不能被共享，也是这个原因，不能将SqlSession放到一个
+
+类的静态域中。虽然他是线程不安全的，但是我们把它作为一个方法级别的，或者一个请求级别的参数，每次使用创建，使用完成销毁，是
+
+完全可以的
+
+> Spring 的解决方案
+
+mybatis-spring中提供了一个SqlSessionTemplate
+
+这个类是线程安全的，实现了SqlSession, 对象内部对于SqlSession的各种操作都是通过代理完成的，这个动态代理的对象中使用的session是方法级别的对象，因为源码中是在一个方法中产生的session
+
+
+
+#### 9. 延迟加载
+
+所谓的延迟加载，其实本质就是等一会儿加载，延迟加载一般出现在多表关联操作的时候，单表是没有延迟加载的概念的
+
+比如： 查询用户和部门的信息，但是此时我们只需要使用用户信息，暂时不用部门信息，这个时候，就可以使用延时加载机制来处理
+
+> 怎么做
+
+* 开启延迟加载   
+  * lazyLoadingEnable  
+  *  aggresiveLazyLoading
+* 配置多表关联查询
+  * association 一对一
+  * collection  一对多
+
+
+
+> 延迟加载原理
+
+延迟加载通过使用动态代理，通过拦截器的时候，如果是延迟加载，那么就单独发送要查询的部分SQL, 只加载其中我们需要的部分，当我们需要关联中的另外部分的时候，再通过我们第一步查询的对象，使用get set 方法加载其他的数据
+
+
+
+
+
+
+
+#### 10. Mybatis Mapper
+
