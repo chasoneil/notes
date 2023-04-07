@@ -181,6 +181,10 @@ public class HelloWorld {
 * -XX:+UseParNewGC     指定使用ParNew 垃圾回收器
 * -XX:ParallelGCThreads    当使用ParNew垃圾回收器，可以用该参数调节垃圾回收器使用的线程数
 * -XX:CMSInitiatingOccupancyFaction  老年代中已使用空间最大占比触发CMS(FULL GC) jdk1.6 默认是92%
+* -XX:UseCMSCompactAtFullCollection 每次full GC之后，stop the world 进行老年代的对象整理
+  * 因为CMS 使用标记 清除算法进行回收，回收之后必然存在内存碎片，所以需要整理
+  * 这个参数默认是开启的
+
 
 
 
@@ -200,7 +204,7 @@ public class HelloWorld {
 
 * 标记清除算法 
     * 最开始的算法 会造成大量的内存碎片
-* 复制算法
+* 复制算法   ==新生代常用的垃圾回收算法==
     * 复制算法就是把堆内存分为两个模块，使用标记整理，将需要保留的对象挪到其中一个区域，剩下的另一个区域全部删除
     * 缺点非常明显，那就是内存被分成两个部分非常浪费内存
     * 优化： 针对上面的缺点，进行优化
@@ -232,7 +236,15 @@ public class HelloWorld {
     * Minor GC之后，发现需要移动到老年代对象大小的和大于老年代剩余空间，引发FULL GC
 * 老年代的垃圾回收算法：一般使用标记清除算法 （CMS）
 
-##### 2.2 垃圾回收器
+
+
+> JVM 优化的本质
+
+JVM 优化的本质， 是让对象尽量在新生代里分配和回收，尽量减少对象频繁进入老年代，避免频繁对老年代进行垃圾回收，同时设置合理的内存大小，减少年轻代的垃圾回收
+
+
+
+##### 2.4 垃圾回收器
 
 ​	在JVM 中，不同区域可以使用不同的垃圾回收器，常见的垃圾回收器分为以下三种
 
@@ -240,19 +252,25 @@ public class HelloWorld {
 * CMS         一般用在老年代回收器 多线程并发
 * G1            新生代和老年代均可使用，使用了更加优秀的算法，提高了效率
 
-##### 2.3 GC中的Stop the world
+
+
+##### 2.5 GC中的Stop the world
 
 ​	事实上， GC的过程中，是不能再继续创建新的对象的，因为新对象会扰乱GC, 所以GC的痛点就是Stop the world， 在进行GC的时候要停止所有的工作线程，专心致志的进行GC。
 
 ​	JVM 垃圾回收器的优化，其实就是降低Stop the world的时间，降低GC对工作线程的影响。
 
-##### 2.4 最常用的年轻代回收器 ParNew
+
+
+##### 2.6 最常用的年轻代回收器 ParNew
 
 * 通过参数指定使用 ParNew  -XX:+UseParNewGC
 
 * 使用ParNew 垃圾回收线程数一般等于CPU核心数
 
-##### 2.5 CMS的工作原理
+
+
+##### 2.7 CMS的工作原理
 
 * 初始标记
     * 这个阶段是 Stop the world
@@ -271,7 +289,9 @@ public class HelloWorld {
 
 ==问题: 重新标记的阶段是只标记GC-ROOT还是全都标记？==
 
-##### 2.5 CMS并发工作中CPU资源的分配
+
+
+##### 2.8 CMS并发工作中CPU资源的分配
 
 ​	CMS 的垃圾回收一共分为四个步骤，其中两个并发执行的步骤其实都比较耗时，同时比较消耗资源，所以使用并发执行。
 
@@ -281,7 +301,7 @@ public class HelloWorld {
 
 
 
-##### 2.6 Cocurrent Mode Failure问题
+##### 2.9 Cocurrent Mode Failure问题
 
 ​	这个问题的本质是因为 “浮动垃圾”
 
@@ -291,7 +311,9 @@ public class HelloWorld {
 
 ==本章中CMS是老年代的垃圾回收，也就是说是full gc, 事实上，CMS 工作是不影响ParNew工作的，所以要分开来看==
 
-##### 2.7 CMS怎么避免内存碎片的问题
+
+
+##### 2.10 CMS怎么避免内存碎片的问题
 
 ​	CMS 使用的标记清除算法执行垃圾回收，这个算法会产生大量的内存碎片
 
@@ -373,6 +395,22 @@ public class HelloWorld {
 * -XX:G1HeapWastePercent  默认值是5%  混合回收使用的是复制算法，意味着随着回收的进行，空闲的region会越来越多，如果空闲的region数量超过5% ，将会立即停止回收。意味着本次回收结束了
 * -XX:G1MixedGCLiveThresholdPercent  默认值是85% 意味着你回收一个region的时候，如果这个region中存活的对象大于85%,那么这个region就不回收。因为存活的对象越多，使用复制算法回收的成本越高，毕竟你需要拷贝对象啊。
 * G1使用复制算法回收，那么总归是有个情况，当你发现region用完了，没有空间了，那么这时会立即stop the world， 然后切换回Serial 进行非常缓慢的回收。
+
+
+
+###### 3.6 G1 的 YGC 和 Mixed GC
+
+我们在了解了上面的内容之后，很明显会问， G1 有 Young GC吗？ 
+
+当然有， 不仅有而且我们和 ParNew + CMS 一样，也是尽量让G1 进行 Young GC
+
+那么 G1 什么时候触发 Young GC呢？
+
+G1 的YGC是根据你XX:MaxGCPauseMills 这个参数决定的，根据回收时间参数， G1会评估触发YGC回收的时机，并不会一定等到 年轻代撑到了 堆空间的 60%才会触发GC
+
+
+
+
 
 
 
