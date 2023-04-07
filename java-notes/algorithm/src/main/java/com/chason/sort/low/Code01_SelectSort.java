@@ -7,14 +7,6 @@ package com.chason.sort.low;
  */
 public class Code01_SelectSort {
 
-    public static void main(String[] args) {
-
-        int[] arr = {4, 6, 3, 1, 7};
-        selectSort(arr);
-
-    }
-
-
     public static void selectSort(int[] arr) {
 
         if (arr == null || arr.length == 1) {

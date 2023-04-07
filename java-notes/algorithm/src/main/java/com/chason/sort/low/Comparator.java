@@ -1,5 +1,7 @@
 package com.chason.sort.low;
 
+import java.util.Arrays;
+
 /**
  * 数组排序对数器
  */
@@ -25,10 +27,49 @@ public class Comparator {
             int[] arr1 = generateRandomArray(maxSize, maxValue);
             int[] arr2 = copyArray(arr1);
 
+            // use your method to sort arr1
+            Code02_BubbleSort.bubbleSort(arr1);
+            Arrays.sort(arr2);
 
+            if (!isEqual(arr1, arr2)) {
+                succeed = false;
+            }
+        }
+
+        if (!succeed) {
+            System.out.println("Your method is wrong!");
+        } else {
+            System.out.println("Your method is right");
         }
 
 
+    }
+
+    public static boolean isEqual(int[] arr1, int[] arr2) {
+
+        if (arr1 == null && arr2 != null) {
+            return false;
+        }
+
+        if (arr1 != null && arr2 == null) {
+            return false;
+        }
+
+        if (arr1 == null && arr2 == null) {
+            return true;
+        }
+
+        if (arr1.length != arr2.length) {
+            return false;
+        }
+
+        for (int i=0; i<arr1.length; i++) {
+            if (arr1[i] != arr2[i]) {
+                return false;
+            }
+        }
+
+        return true;
     }
 
     public static int[] copyArray(int[] source) {
@@ -38,6 +79,11 @@ public class Comparator {
             target[i] = source[i];
         }
         return target;
+    }
+
+
+    public static void main(String[] args) {
+        start();
     }
 
 }

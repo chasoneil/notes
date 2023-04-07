@@ -19,15 +19,6 @@ package com.chason.sort.low;
  */
 public class Code03_InsertSort {
 
-    public static void main(String[] args) {
-
-        int[] arr = {4, 6, 3, 1, 7};
-        insertSort(arr);
-        System.out.println(arr);
-
-    }
-
-
     public static void insertSort(int[] arr) {
 
         if (arr == null || arr.length == 1) {
