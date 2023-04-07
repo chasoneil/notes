@@ -12,17 +12,30 @@ public class Offer25_合并两个有序链表 {
 
     public ListNode mergeTwoLists(ListNode l1, ListNode l2) {
 
-        // 双指针，分别从两个链表的头节点开始，当一个链表结束了，那么就直接将另外一个链表链接过来
+        ListNode cur = new ListNode(-1);
+        ListNode preHead = cur;                 // 记录头结点的位置 不然cur一旦变化这个位置就没了
 
-        ListNode next;
+        while (l1 != null && l2 != null) {      // 归并中的merge思想
 
-        while (l1 != null && l2 != null) {  // 两个链表都还有数据
-            if (l1.val > l2.val) {
-
+            if (l1.val <= l2.val) {
+                cur.next = l1;
+                l1 = l1.next;
+            } else {
+                cur.next = l2;
+                l2 = l2.next;
             }
+            cur = cur.next;
         }
 
-        return null;
+        if (l1 != null) {  // l2 == null
+            cur.next = l1;
+        }
+
+        if (l2 != null) {
+            cur.next = l2;
+        }
+
+        return preHead.next;
     }
 
 }
