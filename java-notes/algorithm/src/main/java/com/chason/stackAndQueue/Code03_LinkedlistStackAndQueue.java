@@ -1,4 +1,4 @@
-package com.chason.linkedlist;
+package com.chason.stackAndQueue;
 
 /**
  * 使用双向链表实现 stackAndQueue  and queue

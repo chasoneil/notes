@@ -1,4 +1,4 @@
-package com.chason.linkedlist;
+package com.chason.stackAndQueue;
 
 /**
  * 使用数组实现一个栈和队列结构
