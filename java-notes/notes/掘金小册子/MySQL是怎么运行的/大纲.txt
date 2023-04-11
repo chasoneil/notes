@@ -1,0 +1,24 @@
+
+
+
+事务的隔离级别与MVCC
+
+1. 事务并发执行遇到的问题:
+    (1). 脏写
+    (2). 脏读
+    (3). 不可重复读
+    (4). 幻读       注意幻读的概念
+
+2. SQL中的四种隔离级别
+    (1). RU
+    (2). RC
+    (3). RR
+    (4). S
+
+3. MVCC 原理
+    (1). 实现MVCC需要的三个字段: row_id; trx_id; roll_pointer
+    (2). roll_pointer 实现的版本链理解
+    (3). ReadView  针对 RC RR隔离级别的操作
+         ReadView 中包含的信息
+         ReadView 如何通过这些信息 选择可以查看的版本
+         怎么通过ReadView实现不同的隔离级别
