@@ -7,7 +7,7 @@
     (1). 脏写
     (2). 脏读
     (3). 不可重复读
-    (4). 幻读       注意幻读的概念
+    (4). 幻读       注意幻读的概念  实测RR隔离界别也是没有幻读问题的
 
 2. SQL中的四种隔离级别
     (1). RU
@@ -16,32 +16,43 @@
     (4). S
 
 3. MVCC 原理
-    (1). 实现MVCC需要的三个字段: row_id; trx_id; roll_pointer
+    (1). 实现MVCC需要的三个字段: row_id（不一定包含，两种情况没有这个隐藏列）; trx_id; roll_pointer
     (2). roll_pointer 实现的版本链理解
     (3). ReadView  针对 RC RR隔离级别的操作
          ReadView 中包含的信息
+            m_ids; min_trx_id; max_trx_id
          ReadView 如何通过这些信息 选择可以查看的版本
          怎么通过ReadView实现不同的隔离级别
 
+         ReadView本身就是一个快照读，通过读取的瞬间生成一个快照的思想，就算是中间别的数据被更改了，还是按照之前生成的快照去读取数据
+
 锁
 
-1. 锁结构  主要是两个字段
-    trx
-    is_waiting
+1. 锁的简单结构  主要是两个字段
+    trx信息  代表这个锁结构是哪个事务生成的
+    is_waiting 代表当前这个锁是不是再等待中
 
 2. 一致性读  通过MVCC实现
 
 3. 锁定读 （使用加锁的方式）
     (1). 锁的种类  共享锁S 排他锁X
+        怎么通过语句加S(Lock in share mode) X(for update)锁
     (2). 共享锁和排他锁互相之间的持有关系以及兼容关系
     (3). 通过什么SQL语句创建共享锁和排他锁
 
 4. 锁的颗粒度
     (1). 行锁
     (2). 表锁
+        表锁一般用不到，怎么添加表锁 Lock table tableName Read(S) Write(X)
+    (3). 表级别的 Auto-inc 锁 这个锁主要是在自增主键的表中有，在insert的时候起作用
 
 5. 为了解决快速发现某些表是不是加锁状态而创建的意向锁 IS IX
 
 6. 行锁的种类
-    (1). record locks
-    (2). gap locks
+    (1). record locks  就是我们普通的行锁 S X都属于
+    (2). gap locks     间隙锁，为了解决幻读问题
+    (3). next-key Locks 是上面两种锁的综合体，既有普通的行锁，又有间隙锁
+    (4). insert intention Locks 插入意向锁 作用是执行insert时被间隙锁或者 next-key挡住的时候，需要加一把锁，表示插入意向并等待
+    (5). insert 隐式锁 因为trx_id的存在，别的事务对insert操作的过程中，发现不是相同的事务，会给insert 加一把普通锁，然后也给自己加一把普通锁
+
+7. 锁结构的简单介绍(不是重点)
