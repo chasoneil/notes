@@ -13,7 +13,7 @@ public class _验证二叉搜索树_ {
 
     public static boolean isValidBST (TreeNode root) {
 
-
+        return false;
 
     }
 
