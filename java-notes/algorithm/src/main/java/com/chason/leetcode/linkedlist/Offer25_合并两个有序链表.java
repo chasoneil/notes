@@ -1,4 +1,4 @@
-package com.chason.leetcode;
+package com.chason.leetcode.linkedlist;
 
 public class Offer25_合并两个有序链表 {
 
