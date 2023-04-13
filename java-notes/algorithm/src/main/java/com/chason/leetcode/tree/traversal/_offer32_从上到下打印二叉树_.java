@@ -2,33 +2,27 @@ package com.chason.leetcode.tree.traversal;
 
 import com.chason.leetcode.tree.TreeNode;
 
+import java.util.ArrayList;
 import java.util.LinkedList;
+import java.util.List;
 import java.util.Queue;
 
-/**
- * 二叉树的按层遍历使用队列这种数据结构
- */
-public class _非递归_二叉树按层遍历_ {
+public class _offer32_从上到下打印二叉树_ {
 
-    public static void main(String[] args) {
+    public static int[] levelOrder(TreeNode root) {
 
-        TreeNode root = TreeNode.createTestTree1();
-        list(root);
-    }
+        if (root == null) return new int[0];
 
-    public static void list(TreeNode root) {
-
-        if (root == null) {
-            return;
-        }
+        List<TreeNode> help = new ArrayList<>();
 
         Queue<TreeNode> queue = new LinkedList<>();
-
         queue.add(root);
 
         while (!queue.isEmpty()) {
+
             TreeNode node = queue.poll();
-            System.out.print(node.val + " ");
+            help.add(node);
+
             if (node.left != null) {
                 queue.add(node.left);
             }
@@ -38,6 +32,12 @@ public class _非递归_二叉树按层遍历_ {
             }
         }
 
+        int[] res = new int[help.size()];
+        for (int i=0; i<help.size(); i++) {
+            res[i] = help.get(i).val;
+        }
+
+        return res;
     }
 
 }
