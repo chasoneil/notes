@@ -80,26 +80,26 @@ public class _非递归_遍历二叉树_ {
         逻辑1 -> 优先找到最左侧的节点， 但是在找的过程中，经历过的节点全部入栈，因为这是为了保证出栈的时候一定是最左侧节点先出
         当左侧已经结束了之后 执行逻辑2
 
-        逻辑2 -> 左侧没了就开始弹出，然后去右节点继续执行逻辑1
+        逻辑2 -> 左侧没了就开始弹出, 弹出之后，栈的上一个节点是头 ，然后去右节点继续执行逻辑1
      */
     public static void in(TreeNode node) {
 
-        if (node != null) {
+        if (node == null) return;
 
-            Stack<TreeNode> s = new Stack<>();
+        Stack<TreeNode> s = new Stack<>();
 
-            while (!s.isEmpty() || node != null) {
+        while (!s.isEmpty() || node != null) {
 
-                if (node != null) {
-                    s.push(node);
-                    node = node.left;
-                } else {
-                    node = s.pop();
-                    System.out.print(node.val + " ");
-                    node = node.right;
-                }
+            if (node != null) {
+                s.push(node);
+                node = node.left;
+            } else {
+                node = s.pop();
+                System.out.print(node.val + " ");
+                node = node.right;
             }
         }
+
 
     }
 }
