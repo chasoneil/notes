@@ -1,5 +1,7 @@
 package com.chason.leetcode.tree.traversal;
 
+import com.chason.leetcode.tree.TreeNode;
+
 /**
  * 使用递归的方式
  * 先序 中序 后序遍历二叉树
@@ -12,23 +14,10 @@ package com.chason.leetcode.tree.traversal;
  * 中序： 2 1 6 3 5 4 7
  * 后序： 2 6 1 5 7 4 3
  */
-public class _递归遍历二叉树_ {
+public class _递归_遍历二叉树_ {
 
     public static void main(String[] args) {
 
-        TreeNode n7 = new TreeNode(7, null, null);
-        TreeNode n6 = new TreeNode(5, null, null);
-        TreeNode n5 = new TreeNode(6, null, null);
-        TreeNode n4 = new TreeNode(2, null, null);
-        TreeNode n3 = new TreeNode(4, n6, n7);
-        TreeNode n2 = new TreeNode(1, n4, n5);
-        TreeNode root = new TreeNode(3, n2, n3);
-
-        // pre(root);
-
-        in(root);
-
-        // pos(root);
 
     }
 
@@ -60,25 +49,6 @@ public class _递归遍历二叉树_ {
         pos(root.left);
         pos(root.right);
         System.out.print(root.val + " ");
-    }
-
-    static class TreeNode  {
-
-        int val;
-        TreeNode left;
-        TreeNode right;
-
-        TreeNode () {}
-
-        TreeNode (int val) {
-            this.val = val;
-        }
-
-        TreeNode (int val, TreeNode left, TreeNode right) {
-            this.val = val;
-            this.left = left;
-            this.right = right;
-        }
     }
 
 
