@@ -3,7 +3,7 @@ package com.chason.leetcode.string;
 import java.util.HashMap;
 import java.util.Map;
 
-public class _03_无重复字符串的最长子串_ {
+public class _3_无重复字符串的最长子串_ {
 
     public static void main(String[] args) {
         String s = "pwwskw";
