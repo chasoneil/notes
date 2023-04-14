@@ -44,4 +44,20 @@ public class TreeNode {
 
         return root;
     }
+
+    /**
+     *      1
+     *   2
+     *      1
+     *
+     *
+     * @return
+     */
+    public static TreeNode createTestTree3() {
+
+        TreeNode root = new TreeNode(1);
+        root.left = new TreeNode(2);
+        root.left.right = new TreeNode(1);
+        return root;
+    }
 }
