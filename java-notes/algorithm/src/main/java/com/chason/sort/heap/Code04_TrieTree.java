@@ -101,19 +101,29 @@ public class Code04_TrieTree {
         public void delete (String string) {
 
             // 首先要查一下是否加入过再删除
-            if (search(string) != 0) {
+            if (search(string) > 0) {
 
                 Node node  = root;
-                char[] chs = string.toCharArray();
                 node.pass--;
+                char[] chs = string.toCharArray();
 
                 int path = 0;
+
+                // 删除一个节点的时候，如果一个节点的 p = 0  说明这个节点以及下面的节点已经没有意义了
                 for (int i=0; i<chs.length; i++) {
                     path = chs[i] - 'a';
+
+                    // 通过父节点查子节点的p--值是不是为0
+                    // 因为我要查的是 -- 之后是不是0 所以原来的值如果是1 就已经没有意义了
+                    if (node.nexts[path].pass == 1) {             // path 的下个节点已经没有意义了
+                        node.nexts[path] = null;
+                        return;
+                    }
+
                     node = node.nexts[path];
                     node.pass--;
                 }
-
+                node.end--;
             }
         }
 
