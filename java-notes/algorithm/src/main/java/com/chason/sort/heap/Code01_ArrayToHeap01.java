@@ -5,6 +5,16 @@ package com.chason.sort.heap;
  */
 public class Code01_ArrayToHeap01 {
 
+
+    public static void main(String[] args) {
+        int[] arr = {2, 1, 5, 4, 6, 8, 0};
+        Code01_ArrayToHeap01 heap01 = new Code01_ArrayToHeap01();
+        for (int i=0; i<arr.length; i++) {
+            heap01.push(arr[i]);
+        }
+        System.out.println(heap01.heap);
+    }
+
     private int[] heap; //堆数组
 
     private int size;
@@ -12,7 +22,7 @@ public class Code01_ArrayToHeap01 {
     private static final int capacity = 10;
 
     public Code01_ArrayToHeap01 () {
-
+        heap = new int[capacity];
     }
 
     public void push (int value) {
@@ -21,8 +31,8 @@ public class Code01_ArrayToHeap01 {
             throw new RuntimeException("heap is full");
         }
 
-        heap[size++] = value;
-        heapInsert(heap, size);
+        heap[size] = value;
+        heapInsert(heap, size++);
     }
 
     /*

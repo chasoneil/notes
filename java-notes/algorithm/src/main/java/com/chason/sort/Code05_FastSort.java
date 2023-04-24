@@ -7,7 +7,7 @@ package com.chason.sort;
 public class Code05_FastSort {
 
     public static void fastSort (int[] arr) {
-        process2(arr, 0, arr.length);
+        process2(arr, 0, arr.length - 1);
     }
 
     public static void process2 (int[] arr, int L, int R) {

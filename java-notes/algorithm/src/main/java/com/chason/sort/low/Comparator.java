@@ -1,5 +1,7 @@
 package com.chason.sort.low;
 
+import com.chason.review._HeapSort_review_;
+
 import java.util.Arrays;
 
 /**
@@ -17,9 +19,9 @@ public class Comparator {
     }
 
     public static void start() {
-        int testTime = 50000;
-        int maxValue = 100;
-        int maxSize  = 100;
+        int testTime = 50;
+        int maxValue = 10;
+        int maxSize  = 10;
 
         boolean succeed = true;
 
@@ -27,9 +29,14 @@ public class Comparator {
             int[] arr1 = generateRandomArray(maxSize, maxValue);
             int[] arr2 = copyArray(arr1);
 
+            System.out.println(arr1);
+            System.out.println(arr2);
             // use your method to sort arr1
-            Code02_BubbleSort.bubbleSort(arr1);
+            _HeapSort_review_.heapSort(arr1);
             Arrays.sort(arr2);
+
+            System.out.println(arr1);
+            System.out.println(arr2);
 
             if (!isEqual(arr1, arr2)) {
                 succeed = false;
