@@ -2,14 +2,9 @@ package com.chason.review;
 
 public class _HeapSort_review_ {
 
-    public static void main(String[] args) {
-        int[] arr = {-2, 5, 1};
-        heapSort(arr);
-        System.out.println(arr);
-    }
-
-
     public static void heapSort(int[] arr) {
+
+        if (arr == null || arr.length < 2) return;
 
         int[] heap = new int[arr.length];
 
@@ -19,10 +14,17 @@ public class _HeapSort_review_ {
         }
 
         int size = heap.length;
+        swap(heap, 0, size-1);
+        size--;
+
         while (size > 0) {
+            heapIfy(heap, 0, size);
             swap(heap, 0, size-1);
             size--;
-            heapIfy(heap, 0, size);
+        }
+
+        for (int i=0; i<arr.length; i++) {
+            arr[i] = heap[i];
         }
     }
 
@@ -31,16 +33,20 @@ public class _HeapSort_review_ {
 
         int left = index * 2 + 1;
 
-        while (left < size) {  // remember
+        while (left < size) {
             int largest = left;
             if (left + 1 < size && heap[left] < heap[left + 1])
                 largest = left + 1;
 
-            if (heap[largest] > heap[index]) {
-                swap(heap, index, largest);
-                index = largest;
-                left = index * 2 + 1;
+            if (heap[largest] < heap[index]) {
+                largest = index;
             }
+
+            if (largest == index) break;
+
+            swap(heap, index, largest);
+            index = largest;
+            left = index * 2 + 1;
         }
 
     }
@@ -57,10 +63,7 @@ public class _HeapSort_review_ {
     }
 
     public static void swap (int[] arr, int i, int j) {
-        if (i == j) {
-            return;
-        }
-
+        if (i == j) return;
         arr[i] = arr[i] ^ arr[j];
         arr[j] = arr[i] ^ arr[j];
         arr[i] = arr[i] ^ arr[j];

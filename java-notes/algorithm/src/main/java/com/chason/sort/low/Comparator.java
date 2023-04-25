@@ -19,9 +19,9 @@ public class Comparator {
     }
 
     public static void start() {
-        int testTime = 50;
-        int maxValue = 10;
-        int maxSize  = 10;
+        int testTime = 50000;
+        int maxValue = 100;
+        int maxSize  = 100;
 
         boolean succeed = true;
 
@@ -29,14 +29,9 @@ public class Comparator {
             int[] arr1 = generateRandomArray(maxSize, maxValue);
             int[] arr2 = copyArray(arr1);
 
-            System.out.println(arr1);
-            System.out.println(arr2);
             // use your method to sort arr1
             _HeapSort_review_.heapSort(arr1);
             Arrays.sort(arr2);
-
-            System.out.println(arr1);
-            System.out.println(arr2);
 
             if (!isEqual(arr1, arr2)) {
                 succeed = false;
@@ -48,8 +43,6 @@ public class Comparator {
         } else {
             System.out.println("Your method is right");
         }
-
-
     }
 
     public static boolean isEqual(int[] arr1, int[] arr2) {
@@ -91,6 +84,23 @@ public class Comparator {
 
     public static void main(String[] args) {
         start();
+    }
+
+
+    private static void printArray(int[] arr) {
+
+        if (arr == null || arr.length == 0) {
+            System.out.println("array is null");
+
+            return;
+        }
+
+        StringBuilder sb = new StringBuilder();
+
+        for (int i=0; i<arr.length; i++) {
+            sb.append(arr[i] +  " ");
+        }
+        System.out.println(sb.toString());
     }
 
 }
