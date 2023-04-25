@@ -88,7 +88,7 @@ public class _非递归_遍历二叉树_ {
 
         Stack<TreeNode> s = new Stack<>();
 
-        while (!s.isEmpty() || node != null) {
+        while (!s.isEmpty() || node != null) {  // 为了左侧的入栈
 
             if (node != null) {
                 s.push(node);
@@ -99,7 +99,5 @@ public class _非递归_遍历二叉树_ {
                 node = node.right;
             }
         }
-
-
     }
 }
