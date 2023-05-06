@@ -1,4 +1,4 @@
-package com.chason.sort.low;
+package com.chason.class01;
 
 /**
  * 选择排序

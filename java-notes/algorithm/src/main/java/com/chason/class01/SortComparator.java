@@ -1,4 +1,4 @@
-package com.chason.sort.low;
+package com.chason.class01;
 
 import com.chason.review._HeapSort_review_;
 
@@ -6,9 +6,14 @@ import java.util.Arrays;
 
 /**
  * 数组排序对数器
+ * 用于数组的各种排序算法
  */
-public class Comparator {
+public class SortComparator {
 
+
+    // Math.random() [0, 1)
+    // N * Math.random() [0, N)
+    // (int) N * Math.random() [0, N-1]
     public static int[] generateRandomArray (int maxSize, int maxValue) {
         int[] arr = new int[(int)(Math.random() * (maxSize +1))];
         for (int i=0; i<arr.length; i++) {
@@ -35,6 +40,7 @@ public class Comparator {
 
             if (!isEqual(arr1, arr2)) {
                 succeed = false;
+                break;
             }
         }
 
