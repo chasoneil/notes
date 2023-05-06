@@ -25,7 +25,7 @@ public class Code05_BSNearestLeft {
         int L = 0;
         int R = arr.length - 1;
 
-        if (target < arr[L] || target > arr[R]) {  // target 不在数组区间中
+        if (target < arr[L] || target > arr[R]) {  // target不在数组区间中
             return -1;
         }
 
