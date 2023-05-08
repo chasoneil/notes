@@ -1,4 +1,4 @@
-package com.chason.stackAndQueue;
+package com.chason.class02;
 
 import java.util.Stack;
 
@@ -7,7 +7,7 @@ import java.util.Stack;
  * 要求: 时间复杂度要求 O(1)
  * 注意: 因为栈可以一致push pop数据，所以栈中的最小值可能也在不断变化  getMin()的返回值也在不断变化
  */
-public class Code01_StackMin {
+public class Code05_StackMin {
 
     /**
      *
@@ -42,11 +42,18 @@ public class Code01_StackMin {
         }
 
         public int pop() {
+            if (data.empty()) {
+                throw new RuntimeException("Stack is empty.");
+            }
+
             min.pop();
             return data.pop();
         }
 
         public int getMin() {
+            if (min.empty()) {
+                throw new RuntimeException("Stack is empty.");
+            }
             return min.peek();
         }
 

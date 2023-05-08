@@ -1,4 +1,4 @@
-package com.chason.recursion;
+package com.chason.class02;
 
 /**
  *  给定一个数组  arr[L...R]  使用递归的方式求这个数组的最大值
@@ -7,8 +7,7 @@ package com.chason.recursion;
  *  (2).左边求最大值，右边也求最大值  (递归)
  *  (3).左右两边的两个最大值取大的就是整个数组的最大值
  */
-public class Code01_ArrayMax {
-
+public class Code07_ArrayMax {
 
     public static void getMaxFromArray(int[] arr) {
         getMaxFromArrayByRecursion(arr, 0, arr.length - 1);

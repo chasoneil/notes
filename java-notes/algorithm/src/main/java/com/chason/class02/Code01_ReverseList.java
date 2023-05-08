@@ -1,37 +1,10 @@
-package com.chason.linkedlist;
+package com.chason.class02;
 
 /**
  * 反转链表
  * 反转单向链表(Node)和双向链表(DoubleNode)
  */
 public class Code01_ReverseList {
-
-
-    /**
-     * 单向链表
-     */
-    public static class Node {
-
-        private int value;
-        private Node next;
-
-        public Node(int value) {
-            this.value = value;
-        }
-    }
-
-    /**
-     * 双向链表
-     */
-    public static class DoubleNode {
-        private int value;
-        private DoubleNode prev;
-        private DoubleNode next;
-
-        public DoubleNode(int value) {
-            this.value = value;
-        }
-    }
 
     /**
      * 反转单向链表
@@ -40,9 +13,9 @@ public class Code01_ReverseList {
      */
     public static Node reverseList(Node head) {
 
-        // 采用双指针
+        // 采用双指针 和 虚拟头节点
         Node prev = null;
-        Node next = null;
+        Node next = null;   // next 指针用于记录要更改节点的下一个节点
 
         while (head != null) {
             next = head.next;
@@ -62,10 +35,12 @@ public class Code01_ReverseList {
         while (head != null) {
 
             next = head.next;
+
+            // 双向链表要调整两条指针
             head.next = prev;
             head.prev = next;
-
             prev = head;
+
             head = next;
         }
         return prev;

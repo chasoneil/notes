@@ -1,4 +1,4 @@
-package com.chason.stackAndQueue;
+package com.chason.class02;
 
 /**
  * 使用双向链表实现 stackAndQueue  and queue
@@ -94,7 +94,6 @@ public class Code03_LinkedlistStackAndQueue {
         public MyStack() {
 
         }
-
         public void push(int value) {
             DoubleEndsStructure.addFromHead(value);
         }
@@ -111,7 +110,6 @@ public class Code03_LinkedlistStackAndQueue {
         public void push(int value) {
             DoubleEndsStructure.addFromHead(value);
         }
-
 
         public int poll() {
             return DoubleEndsStructure.getFromTail();

@@ -1,4 +1,4 @@
-package com.chason.stackAndQueue;
+package com.chason.class02;
 
 /**
  * 使用数组实现一个栈和队列结构
@@ -38,6 +38,7 @@ public class Code04_ArrayStackAndQueue {
 
     /**
      * 使用 arr 实现队列需要借助 ring buffer (环状结构)
+     * 通过size 将 pushIndex 和 popIndex 的追赶动作解耦
      */
     static class MyQueue {
 
