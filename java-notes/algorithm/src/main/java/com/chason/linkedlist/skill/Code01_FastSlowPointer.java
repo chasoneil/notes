@@ -1,6 +1,6 @@
 package com.chason.linkedlist.skill;
 
-import com.chason.linkedlist.Node;
+import com.chason.class02.Node;
 
 /**
  * 快慢指针

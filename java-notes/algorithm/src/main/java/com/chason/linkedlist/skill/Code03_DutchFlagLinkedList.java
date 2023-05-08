@@ -1,6 +1,6 @@
 package com.chason.linkedlist.skill;
 
-import com.chason.linkedlist.Node;
+import com.chason.class02.Node;
 
 /**
  * 在链表上玩荷兰国旗问题
