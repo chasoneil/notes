@@ -1,7 +1,5 @@
 package com.chason.review;
 
-import com.chason.sort.Code05_FastSort;
-
 public class _FastSort_review_ {
 
     public static void main(String[] args) {
