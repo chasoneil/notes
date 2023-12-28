@@ -1,10 +1,22 @@
 package com.chason.entity;
 
+import java.util.Set;
+
 public class JpFifty {
 
     private String ping;
 
     private String pian;
+
+    private Set<String> read;
+
+    public Set<String> getRead() {
+        return read;
+    }
+
+    public void setRead(Set<String> read) {
+        this.read = read;
+    }
 
     public void setPian(String pian) {
         this.pian = pian;

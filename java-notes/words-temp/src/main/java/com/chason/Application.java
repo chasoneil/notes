@@ -7,14 +7,13 @@ import java.io.BufferedReader;
 import java.io.FileInputStream;
 import java.io.InputStreamReader;
 import java.net.URL;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Random;
-import java.util.Scanner;
+import java.util.*;
 
 public class Application {
 
     private static List<JpFifty> words = new ArrayList<>();
+
+    private static int count = 0;
 
     public static void main(String[] args) {
 
@@ -28,47 +27,104 @@ public class Application {
     // 五十音
     public static void fiftyStarter (int type) {
         initData();
-        int size = words.size();
-        int count = size;
         double correct = 0L;
-
-        Random random = new Random();
-        while (size > 0) {
-
-            int index = random.nextInt(size);
-            size--;
-
-            JpFifty jpFifty = words.get(index);
-            words.remove(index);
-
-            String res = "";
-            if (type == 1) {
-                System.out.println("请根据平假名书写片假名 :" + jpFifty.getPing() + " -> ");
-                Scanner scanner = new Scanner(System.in);
-                res = scanner.next();
-                if (jpFifty.getPian().equals(res)) {
-                    System.out.println("正确");
-                    correct++;
-                } else {
-                    System.err.println("错误");
-                }
-            } else if (type == 2) {
-                System.out.println("请根据片假名书写平假名 :" + jpFifty.getPian() + " -> ");
-                Scanner scanner = new Scanner(System.in);
-                res = scanner.next();
-                if (jpFifty.getPing().equals(res)) {
-                    System.out.println("正确");
-                    correct++;
-                } else {
-                    System.err.println("错误");
-                }
-            }
+        switch (type) {
+            case 1:
+                correct = doTest1();
+                break;
+            case 2:
+                correct = doTest2();
+                break;
+            case 3:
+            case 4:
+                correct = doTest3(type);
+                break;
+            default:
+                break;
         }
-
-
         System.out.println("*** 测试结束 ***");
         System.out.println("正确率：" + (correct / count) * 100 + "%");
 
+    }
+
+    /**
+     * 平假名 -> 片假名
+     */
+    private static double doTest1() {
+        int size = count;
+        Random random = new Random();
+        String res = "";
+        double correct = 0L;
+        while (size > 0) {
+            int index = random.nextInt(size--);
+            JpFifty jpFifty = words.get(index);
+            System.out.println("请根据平假名书写片假名 :" + jpFifty.getPing() + " -> ");
+            Scanner scanner = new Scanner(System.in);
+            res = scanner.next();
+            if (jpFifty.getPian().equals(res)) {
+                System.out.println("正确");
+                correct++;
+            } else {
+                System.err.println("错误");
+            }
+            words.remove(index);
+        }
+        return correct;
+    }
+
+    /**
+     * 片假名 -> 平假名
+     */
+    private static double doTest2() {
+        int size = count;
+        Random random = new Random();
+        String res = "";
+        double correct = 0L;
+        while (size > 0) {
+            int index = random.nextInt(size--);
+            JpFifty jpFifty = words.get(index);
+            System.out.println("请根据片假名书写平假名 :" + jpFifty.getPian() + " -> ");
+            Scanner scanner = new Scanner(System.in);
+            res = scanner.next();
+            if (jpFifty.getPing().equals(res)) {
+                System.out.println("正确");
+                correct++;
+            } else {
+                System.err.println("错误");
+            }
+            words.remove(index);
+        }
+        return correct;
+    }
+
+    /**
+     * 平假名 -> 读音
+     */
+    private static double doTest3(int type) {
+        int size = count;
+        Random random = new Random();
+        String res = "";
+        double correct = 0L;
+        while (size > 0) {
+            int index = random.nextInt(size--);
+            JpFifty jpFifty = words.get(index);
+
+            if (type == 3) {
+                System.out.println("请根据平假名书写读音 :" + jpFifty.getPing() + " -> ");
+            } else if (type == 4) {
+                System.out.println("请根据片假名书写读音 :" + jpFifty.getPian() + " -> ");
+            }
+            Scanner scanner = new Scanner(System.in);
+            res = scanner.next();
+            if (jpFifty.getRead().contains(res)) {
+                System.out.println("正确");
+                correct++;
+            } else {
+                System.err.println("错误");
+            }
+            words.remove(index);
+        }
+        return correct;
     }
 
 
@@ -82,12 +138,33 @@ public class Application {
                 if (StringUtil.isEmpty(line)) {
                     continue;
                 }
-                JpFifty jpFifty = new JpFifty(line.split("#")[0], line.split("#")[1]);
+                JpFifty jpFifty = new JpFifty();
+
+                String[] msg = line.split("#");
+                if (msg.length != 3) {
+                    continue;
+                }
+                jpFifty.setPing(msg[0]);
+                jpFifty.setPian(msg[1]);
+
+                String reads = msg[2];
+                if (StringUtil.isEmpty(reads)) {
+                    continue;
+                }
+
+                String[] readStr = reads.split(":");
+                Set<String> tar = new HashSet<>();
+                for (int i=0; i<readStr.length; i++) {
+                    tar.add(readStr[i]);
+                }
+                jpFifty.setRead(tar);
                 words.add(jpFifty);
             }
         } catch (Exception e) {
             e.printStackTrace();
         }
+
+        count = words.size();
     }
 
 
