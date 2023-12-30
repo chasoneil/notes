@@ -70,10 +70,28 @@ public class Application {
         Scanner scanner = new Scanner(System.in);
         String index = scanner.next();
 
-        words = WordsService.initWordsData();
+        System.out.println("-> 执行测试初始化");
+        words = WordsService.initWordsData(index);
 
         String correctRate = "0.0%";
-        correctRate = WordsService.doTest(index);
+        System.out.println("-> 请输入练习类型：");
+        System.out.println("1 -> 根据日语写出中文含义");
+        System.out.println("2 -> 根据日语发音写出中文含义");
+        System.out.println("3 -> 根据中文含义写出日语");
+        int type = scanner.nextInt();
+        switch (type) {
+            case 1:
+                correctRate = WordsService.doTest1(words);
+                break;
+            case 2:
+                correctRate = WordsService.doTest2(words);
+                break;
+            case 3:
+                correctRate = WordsService.doTest3(words);
+                break;
+            default:
+                break;
+        }
         System.out.println("*** 测试结束 ***");
         System.out.println("正确率：" + correctRate);
     }
