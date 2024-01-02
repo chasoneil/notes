@@ -1,63 +1,24 @@
 package com.chason.service;
 
-import com.chason.Application;
 import com.chason.entity.JpFifty;
+import com.chason.util.FileUtil;
 import com.chason.util.StringUtil;
-
-import java.io.BufferedReader;
-import java.io.FileInputStream;
-import java.io.InputStreamReader;
-import java.net.URL;
 import java.util.*;
 
 public class FiftyService {
 
-    public static List<JpFifty> initFiftyData () {
+    public static List<JpFifty> words = new ArrayList<>();
 
-        List<JpFifty> words = new ArrayList<>();
+    public static final String PREFIX = "fifty_";
 
-        URL url = Application.class.getClassLoader().getResource("fifty");
-        String file = url.getPath();
-        try (BufferedReader br = new BufferedReader(new InputStreamReader(new FileInputStream(file)));) {
-            String line = "";
-            while ((line = br.readLine()) != null) {
-                if (StringUtil.isEmpty(line)) {
-                    continue;
-                }
-                JpFifty jpFifty = new JpFifty();
-
-                String[] msg = line.split("#");
-                if (msg.length != 3) {
-                    continue;
-                }
-                jpFifty.setPing(msg[0]);
-                jpFifty.setPian(msg[1]);
-
-                String reads = msg[2];
-                if (StringUtil.isEmpty(reads)) {
-                    continue;
-                }
-
-                String[] readStr = reads.split(":");
-                Set<String> tar = new HashSet<>();
-                for (int i=0; i<readStr.length; i++) {
-                    tar.add(readStr[i]);
-                }
-                jpFifty.setRead(tar);
-                words.add(jpFifty);
-            }
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-
-        return words;
+    public static void initFiftyData (String index) {
+        FileUtil.initData(index, 1);
     }
-
 
     /**
      * 平假名 -> 片假名
      */
-    public static String doTest1(List<JpFifty> words) {
+    public static String doTest1() {
 
         int size = words.size();
         int count = size;
@@ -86,7 +47,7 @@ public class FiftyService {
     /**
      * 片假名 -> 平假名
      */
-    public static String doTest2(List<JpFifty> words) {
+    public static String doTest2() {
         int size = words.size();
         int count = size;
 
@@ -116,7 +77,7 @@ public class FiftyService {
     /**
      * 平假名 -> 读音
      */
-    public static String doTest3(List<JpFifty> words, int type) {
+    public static String doTest3(int type) {
 
         int size = words.size();
         int count = size;
@@ -152,6 +113,29 @@ public class FiftyService {
             words.remove(index);
         }
         return (correct / count) * 100 + "%";
+    }
+
+    public static void resolveData (String line) {
+        JpFifty jpFifty = new JpFifty();
+        String[] msg = line.split("#");
+        if (msg.length != 3) {
+            return;
+        }
+        jpFifty.setPing(msg[0]);
+        jpFifty.setPian(msg[1]);
+
+        String reads = msg[2];
+        if (StringUtil.isEmpty(reads)) {
+            return;
+        }
+
+        String[] readStr = reads.split(":");
+        Set<String> tar = new HashSet<>();
+        for (int i=0; i<readStr.length; i++) {
+            tar.add(readStr[i]);
+        }
+        jpFifty.setRead(tar);
+        words.add(jpFifty);
     }
 
 }

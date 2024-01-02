@@ -1,165 +1,61 @@
 package com.chason.service;
 
-import com.chason.Application;
-import com.chason.entity.JpFifty;
-import com.chason.entity.JpWords;
-import com.chason.util.StringUtil;
 
-import java.io.BufferedReader;
-import java.io.FileInputStream;
-import java.io.InputStreamReader;
-import java.net.URL;
+import com.chason.entity.JpWords;
+import com.chason.util.FileUtil;
+import com.chason.util.StringUtil;
 import java.util.*;
-import java.util.concurrent.ExecutionException;
 
 public class WordsService {
 
-    public static List<JpWords> initWordsData (String index) {
+    private static Random random = new Random();
 
-        List<JpWords> words = new ArrayList<>();
-        String fileName = "words_" + index;
-        String file = "";
-        URL url = null;
-        try {
-            url = Application.class.getClassLoader().getResource(fileName);
-            file = url.getPath();
-        } catch (Exception e) {
-            System.err.println("文件不存在！");
-            System.exit(-1);
-        }
+    private static double correct = 0L;
 
-        if (StringUtil.isEmpty(file)) {
-            System.err.println("文件不存在！");
-            System.exit(-1);
-        }
+    public static final String PREFIX = "words_";
 
-        try (BufferedReader br = new BufferedReader(new InputStreamReader(new FileInputStream(file)));) {
-            String line = "";
-            while ((line = br.readLine()) != null) {
-                if (StringUtil.isEmpty(line)) {
-                    continue;
-                }
-                JpWords jpWords = new JpWords();
+    public static List<JpWords> words = new ArrayList<>();
 
-                String[] msg = line.split("#");
-                if (msg.length != 3) {
-                    continue;
-                }
-
-                jpWords.setJpRead(msg[0]);
-                jpWords.setJpWrite(msg[1]);
-
-                String means = msg[2];
-                if (StringUtil.isEmpty(means)) {
-                    continue;
-                }
-
-                String[] readStr = means.split(":");
-                Set<String> tar = new HashSet<>();
-                for (int i=0; i<readStr.length; i++) {
-                    tar.add(readStr[i]);
-                }
-
-                jpWords.setChMeans(tar);
-                words.add(jpWords);
-            }
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-
-        return words;
+    public static void initWordsData (String index) {
+        FileUtil.initData(index, 2);
     }
 
-    public static String doTest1 (List<JpWords> words) {
+    public static String doTest1 () {
 
         int size = words.size();
         int count = size;
 
-        Random random = new Random();
-        String res = "";
-        double correct = 0L;
+        String msg = "";
         System.out.println("---> 请根据日语单词翻译中文含义 <---");
         while (size > 0) {
             int index = random.nextInt(size--);
-            JpWords jpWords = words.get(index);
-            System.out.println(jpWords.getJpWrite() + " -> ");
-            Scanner scanner = new Scanner(System.in);
-            res = scanner.next();
-
-            Set<String> chMeans = jpWords.getChMeans();
-            if (chMeans.contains(res)) {
-                System.out.println("正确");
-                correct++;
-            } else {
-                boolean flag = false;
-                for (String mean : chMeans) {
-                    if (mean.contains(res)) {
-                        flag = true;
-                        break;
-                    }
-                }
-
-                if (flag) {
-                    System.out.println("正确");
-                    correct++;
-                } else {
-                    System.out.println("错误");
-                }
-            }
-            words.remove(index);
+            doWordTest1(index, 1, msg);
         }
+
         return (correct / count) * 100 + "%";
     }
 
-    public static String doTest2 (List<JpWords> words) {
+    public static String doTest2 () {
 
         int size = words.size();
         int count = size;
 
-        Random random = new Random();
-        String res = "";
+        String msg = "";
         double correct = 0L;
         System.out.println("---> 请根据日语发音翻译中文含义 <---");
         while (size > 0) {
             int index = random.nextInt(size--);
-            JpWords jpWords = words.get(index);
-            System.out.println(jpWords.getJpRead() + " -> ");
-            Scanner scanner = new Scanner(System.in);
-            res = scanner.next();
-
-            Set<String> chMeans = jpWords.getChMeans();
-            if (chMeans.contains(res)) {
-                System.out.println("正确");
-                correct++;
-            } else {
-                boolean flag = false;
-                for (String mean : chMeans) {
-                    if (mean.contains(res)) {
-                        flag = true;
-                        break;
-                    }
-                }
-
-                if (flag) {
-                    System.out.println("正确");
-                    correct++;
-                } else {
-                    System.out.println("错误");
-                }
-            }
-            words.remove(index);
+            doWordTest1(index, 2, msg);
         }
         return (correct / count) * 100 + "%";
     }
 
-    public static String doTest3 (List<JpWords> words) {
+    public static String doTest3 () {
 
         int size = words.size();
         int count = size;
 
-        Random random = new Random();
         String res = "";
-        double correct = 0L;
         System.out.println("---> 请根据中文含义写出日语单词 <---");
         while (size > 0) {
             int index = random.nextInt(size--);
@@ -179,9 +75,84 @@ public class WordsService {
             } else {
                 System.out.println("错误");
             }
+
+            System.out.println("正确答案:" + jpWords.getJpWrite());
             words.remove(index);
         }
         return (correct / count) * 100 + "%";
+    }
+
+    private static void doWordTest1(int index, int type, String msg) {
+
+        JpWords jpWords = words.get(index);
+        switch (type) {
+            case 1:
+                System.out.println(jpWords.getJpWrite() + " -> ");
+                break;
+            case 2:
+                System.out.println(jpWords.getJpRead() + " -> ");
+                break;
+            default:
+                break;
+        }
+
+        Scanner scanner = new Scanner(System.in);
+        String enter = scanner.next();
+        Set<String> chMeans = jpWords.getChMeans();
+
+        if (chMeans.contains(enter)) {
+            System.out.println("正确");
+            correct++;
+        } else {
+            boolean flag = false;
+            for (String mean : chMeans) {
+                if (mean.contains(enter)) {
+                    flag = true;
+                    break;
+                }
+            }
+
+            if (flag) {
+                System.out.println("正确");
+                correct++;
+            } else {
+                System.out.println("错误");
+            }
+        }
+
+        for (String mean : chMeans) {
+            msg += mean + "; ";
+        }
+
+        System.out.println("正确答案:" + msg);
+        words.remove(index);
+    }
+
+    public static void resolveData (String line) {
+
+        JpWords jpWords = new JpWords();
+
+        String[] msg = line.split("#");
+        if (msg.length != 3) {
+            return;
+        }
+
+        jpWords.setJpRead(msg[0]);
+        jpWords.setJpWrite(msg[1]);
+
+        String means = msg[2];
+        if (StringUtil.isEmpty(means)) {
+            return;
+        }
+
+        String[] readStr = means.split(":");
+        Set<String> tar = new HashSet<>();
+        for (int i=0; i<readStr.length; i++) {
+            tar.add(readStr[i]);
+        }
+
+        jpWords.setChMeans(tar);
+        words.add(jpWords);
     }
 
 }

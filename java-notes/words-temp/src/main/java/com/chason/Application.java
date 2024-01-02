@@ -1,17 +1,11 @@
 package com.chason;
 
-import com.chason.entity.JpFifty;
-import com.chason.entity.JpWords;
 import com.chason.service.FiftyService;
 import com.chason.service.WordsService;
 
 import java.util.*;
 
 public class Application {
-
-    private static List<JpFifty> fifties = new ArrayList<>();
-
-    private static List<JpWords> words = new ArrayList<>();
 
     public static void main(String[] args) {
 
@@ -29,31 +23,36 @@ public class Application {
         }
     }
 
-    // 五十音
+    // fifty_01
     public static void fiftyStarter () {
 
         System.out.println("*****五十音图练习*****");
+        System.out.println("-> 请输入练习文件：（输入文件序列号）");
+
+        Scanner scanner = new Scanner(System.in);
+        String index = scanner.next();
+
+        System.out.println("-> 执行测试初始化");
+        FiftyService.initFiftyData(index);
+
+        String correctRate = "0.0%";
         System.out.println("-> 请输入练习类型：");
         System.out.println("1 -> 根据平假名写出片假名");
         System.out.println("2 -> 根据片假名写出平假名");
         System.out.println("3 -> 根据平假名写出拼写");
         System.out.println("4 -> 根据片假名写出拼写");
 
-        Scanner scanner = new Scanner(System.in);
         int type = scanner.nextInt();
-        fifties = FiftyService.initFiftyData();
-
-        String correctRate = "0.0%";
         switch (type) {
             case 1:
-                correctRate = FiftyService.doTest1(fifties);
+                correctRate = FiftyService.doTest1();
                 break;
             case 2:
-                correctRate = FiftyService.doTest2(fifties);
+                correctRate = FiftyService.doTest2();
                 break;
             case 3:
             case 4:
-                correctRate = FiftyService.doTest3(fifties, type);
+                correctRate = FiftyService.doTest3(type);
                 break;
             default:
                 break;
@@ -71,7 +70,7 @@ public class Application {
         String index = scanner.next();
 
         System.out.println("-> 执行测试初始化");
-        words = WordsService.initWordsData(index);
+        WordsService.initWordsData(index);
 
         String correctRate = "0.0%";
         System.out.println("-> 请输入练习类型：");
@@ -81,13 +80,13 @@ public class Application {
         int type = scanner.nextInt();
         switch (type) {
             case 1:
-                correctRate = WordsService.doTest1(words);
+                correctRate = WordsService.doTest1();
                 break;
             case 2:
-                correctRate = WordsService.doTest2(words);
+                correctRate = WordsService.doTest2();
                 break;
             case 3:
-                correctRate = WordsService.doTest3(words);
+                correctRate = WordsService.doTest3();
                 break;
             default:
                 break;
