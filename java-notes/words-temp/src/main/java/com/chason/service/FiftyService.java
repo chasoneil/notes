@@ -9,7 +9,7 @@ public class FiftyService {
 
     public static List<JpFifty> words = new ArrayList<>();
 
-    public static final String PREFIX = "fifty_";
+    public static final String PREFIX = "fifty/fifty_";
 
     public static void initFiftyData (String index) {
         FileUtil.initData(index, 1);

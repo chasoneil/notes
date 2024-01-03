@@ -12,7 +12,7 @@ public class WordsService {
 
     private static double correct = 0L;
 
-    public static final String PREFIX = "words_";
+    public static final String PREFIX = "words/words_";
 
     public static List<JpWords> words = new ArrayList<>();
 
