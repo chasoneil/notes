@@ -1,8 +1,5 @@
 package com.chason.util;
 
-import com.chason.service.FiftyService;
-import com.chason.service.WordsService;
-
 import java.io.*;
 import java.net.URL;
 
@@ -16,9 +13,13 @@ public class ReverseUtils {
 
         String file = url.getPath();
 
+        String newFileName = file + "_temp";
+
+        System.out.println(newFileName);
+
         try (BufferedReader br = new BufferedReader(new InputStreamReader(new FileInputStream(file)))) {
 
-            BufferedWriter bufferedWriter = new BufferedWriter(new FileWriter(file));
+            BufferedWriter bufferedWriter = new BufferedWriter(new FileWriter(newFileName));
             String line = "";
             while ((line = br.readLine()) != null) {
                 if (CheckUtil.checkLine(line)) {
@@ -27,10 +28,15 @@ public class ReverseUtils {
                     String newLine = "";
                     newLine = msgs[2] + "#" + msgs[1] + "#" + msgs[0];
 
+                    bufferedWriter.write(newLine + "\n");
                 }
             }
+
+            bufferedWriter.close();
         } catch (Exception e) {
             e.printStackTrace();
+        } finally {
+
         }
 
 
