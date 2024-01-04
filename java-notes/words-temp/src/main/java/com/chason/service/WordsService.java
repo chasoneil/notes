@@ -73,7 +73,7 @@ public class WordsService {
                 System.out.println("正确");
                 correct++;
             } else {
-                System.out.println("错误");
+                System.err.println("错误");
             }
 
             System.out.println("正确答案:" + jpWords.getJpWrite());
@@ -116,7 +116,7 @@ public class WordsService {
                 System.out.println("正确");
                 correct++;
             } else {
-                System.out.println("错误");
+                System.err.println("错误");
             }
         }
 
