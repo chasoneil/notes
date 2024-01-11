@@ -74,9 +74,8 @@ public class WordsService {
                 correct++;
             } else {
                 System.err.println("错误");
+                System.out.println("正确答案:" + jpWords.getJpWrite());
             }
-
-            System.out.println("正确答案:" + jpWords.getJpWrite());
             words.remove(index);
         }
         return (correct / count) * 100 + "%";
@@ -117,14 +116,13 @@ public class WordsService {
                 correct++;
             } else {
                 System.err.println("错误");
+                for (String mean : chMeans) {
+                    msg += mean + "; ";
+                }
+
+                System.out.println("正确答案:" + msg);
             }
         }
-
-        for (String mean : chMeans) {
-            msg += mean + "; ";
-        }
-
-        System.out.println("正确答案:" + msg);
         words.remove(index);
     }
 
