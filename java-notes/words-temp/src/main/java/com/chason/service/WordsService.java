@@ -135,14 +135,15 @@ public class WordsService {
             return;
         }
 
+        if (StringUtil.isEmpty(msg[0]) || StringUtil.isEmpty(msg[1]) ||
+            StringUtil.isEmpty(msg[2])) {
+            return;
+        }
+
         jpWords.setJpRead(msg[0]);
         jpWords.setJpWrite(msg[1]);
 
         String means = msg[2];
-        if (StringUtil.isEmpty(means)) {
-            return;
-        }
-
         String[] readStr = means.split(":");
         Set<String> tar = new HashSet<>();
         for (int i=0; i<readStr.length; i++) {
