@@ -41,7 +41,6 @@ public class WordsService {
         int count = size;
 
         String msg = "";
-        double correct = 0L;
         System.out.println("---> 请根据日语发音翻译中文含义 <---");
         while (size > 0) {
             int index = random.nextInt(size--);
