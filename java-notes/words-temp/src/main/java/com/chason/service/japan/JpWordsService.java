@@ -1,18 +1,18 @@
-package com.chason.service;
+package com.chason.service.japan;
 
 
-import com.chason.entity.JpWords;
+import com.chason.entity.japan.JpWords;
 import com.chason.util.FileUtil;
 import com.chason.util.StringUtil;
 import java.util.*;
 
-public class WordsService {
+public class JpWordsService {
 
     private static Random random = new Random();
 
     private static double correct = 0L;
 
-    public static final String PREFIX = "words/words_";
+    public static final String PREFIX = "japan/words/words_";
 
     public static List<JpWords> words = new ArrayList<>();
 

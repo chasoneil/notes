@@ -1,4 +1,4 @@
-package com.chason.entity;
+package com.chason.entity.japan;
 
 import lombok.Data;
 

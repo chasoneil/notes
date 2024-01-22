@@ -7,7 +7,7 @@ public class ReverseUtils {
 
     public static void main(String[] args) {
 
-        String fileName = "words/words_03";
+        String fileName = "japan/words/words_03";
 
         URL url = ReverseUtils.class.getClassLoader().getResource(fileName);
 

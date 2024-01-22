@@ -1,8 +1,9 @@
 package com.chason.util;
 
 import com.chason.Application;
-import com.chason.service.FiftyService;
-import com.chason.service.WordsService;
+import com.chason.service.english.EnglishWordsService;
+import com.chason.service.japan.JpFiftyService;
+import com.chason.service.japan.JpWordsService;
 
 import java.io.BufferedReader;
 import java.io.FileInputStream;
@@ -14,21 +15,32 @@ public class FileUtil {
     /**
      *
      * @param index File index
-     * @param type file type 1: fifty exercise 2: words exercise
+     * @param type file type
+     *             1: fifty exercise
+     *             2: jpWords exercise
+     *             3: engWords exercise
      */
     public static void initData (String index, int type) {
 
         String fileName = null;
 
-        if (type == 1) {
-            fileName = FiftyService.PREFIX + index;
-        } else if (type == 2) {
-            fileName = WordsService.PREFIX +  index;
+        switch (type) {
+            case 1:
+                fileName = JpFiftyService.PREFIX + index;
+                break;
+            case 2:
+                fileName = JpWordsService.PREFIX +  index;
+                break;
+            case 3:
+                fileName = EnglishWordsService.PRIFIX + index;
+                break;
+            default:
+                break;
         }
 
         if (StringUtil.isEmpty(fileName)) {
             System.err.println("输入的文件不存在");
-            System.exit(0);
+            System.exit(-1);
         }
 
         String file = null;
@@ -51,10 +63,20 @@ public class FileUtil {
             String line = "";
             while ((line = br.readLine()) != null) {
                 if (CheckUtil.checkLine(line)) {
-                    if (type == 1) {
-                        FiftyService.resolveData(line);
-                    } else {
-                        WordsService.resolveData(line);
+
+                    switch (type) {
+                        case 1:
+                            JpFiftyService.resolveData(line);
+                            break;
+                        case 2:
+                            JpWordsService.resolveData(line);
+                            break;
+                        case 3:
+                            EnglishWordsService.resolveData(line);
+                            break;
+                        default:
+                            break;
+
                     }
                 }
             }

@@ -1,15 +1,15 @@
-package com.chason.service;
+package com.chason.service.japan;
 
-import com.chason.entity.JpFifty;
+import com.chason.entity.japan.JpFifty;
 import com.chason.util.FileUtil;
 import com.chason.util.StringUtil;
 import java.util.*;
 
-public class FiftyService {
+public class JpFiftyService {
 
     public static List<JpFifty> words = new ArrayList<>();
 
-    public static final String PREFIX = "fifty/fifty_";
+    public static final String PREFIX = "japan/fifty/fifty_";
 
     public static void initFiftyData (String index) {
         FileUtil.initData(index, 1);
