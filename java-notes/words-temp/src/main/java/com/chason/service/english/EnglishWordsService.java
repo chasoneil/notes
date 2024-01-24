@@ -1,6 +1,6 @@
 package com.chason.service.english;
 
-import com.chason.entity.english.EnglishWords;
+import com.chason.entity.english.EngWords;
 import com.chason.util.FileUtil;
 import com.chason.util.StringUtil;
 
@@ -11,7 +11,7 @@ import java.util.Scanner;
 
 public class EnglishWordsService {
 
-    public static List<EnglishWords> engWords = new ArrayList<>();
+    public static List<EngWords> engWords = new ArrayList<>();
 
     public static final String PRIFIX = "english/words/words_";
 
@@ -31,7 +31,7 @@ public class EnglishWordsService {
         Scanner scanner = new Scanner(System.in);
         while (size > 0) {
             int index = random.nextInt(size--);
-            EnglishWords englishWords = engWords.get(index);
+            EngWords englishWords = engWords.get(index);
 
             String res = scanner.next();
             if (type == 1) {
@@ -62,10 +62,10 @@ public class EnglishWordsService {
     }
 
     public static void resolveData (String line) {
-        EnglishWords engWord = new EnglishWords();
+        EngWords engWord = new EngWords();
 
         String[] msg = line.split("#");
-        if (msg.length != 3) {
+        if (msg.length == 2) {
             return;
         }
 
@@ -77,6 +77,12 @@ public class EnglishWordsService {
         engWord.setWords(msg[0]);
         engWord.setMeans(msg[1]);
         engWords.add(engWord);
+    }
+
+    public void save (String line) {
+
+
+
     }
 
 

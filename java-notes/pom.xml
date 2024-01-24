@@ -12,6 +12,7 @@
         <module>algorithm</module>
         <module>words-temp</module>
         <module>mybatis-demo</module>
+        <module>design-patterns</module>
     </modules>
 
     <properties>
