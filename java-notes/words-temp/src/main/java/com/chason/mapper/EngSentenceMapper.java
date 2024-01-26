@@ -9,4 +9,7 @@ public interface EngSentenceMapper {
     int insert(EngSentence engSentence);
 
     List<EngSentence> listAll();
+
+
+    List<EngSentence> listByIndex(String index);
 }

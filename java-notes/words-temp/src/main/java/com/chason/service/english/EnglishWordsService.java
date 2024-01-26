@@ -155,6 +155,33 @@ public class EnglishWordsService {
 
     public static String doDBTest (String index, int testType) {
 
+        SqlSession sqlSession = MybatisFactory.getSqlSession();
+        Scanner scanner = new Scanner(System.in);
+
+        if (testType == 1) {
+
+        } else if (testType == 2) {
+
+        } else if (testType == 3) {
+
+            EngSentenceMapper engWordsMapper = sqlSession.getMapper(EngSentenceMapper.class);
+            List<EngSentence> engSentences = engWordsMapper.listByIndex(index);
+            System.out.println("-> 请根据中文句子翻译成英文");
+
+            for (EngSentence engSentence : engSentences) {
+
+                System.out.println("请使用单词：" + engSentence.getEngWord());
+                List<Sentence> sentences = engSentence.sentences();
+
+                for (Sentence sentence : sentences) {
+                    System.out.println("中文：" + sentence.getMean());
+                    String input = scanner.next();
+                    System.out.println("答案：" + sentence.getSentence());
+                }
+            }
+        }
+
+
         return null;
 
     }

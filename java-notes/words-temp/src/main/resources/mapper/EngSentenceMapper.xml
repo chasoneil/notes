@@ -19,4 +19,8 @@
     <insert id="insert" parameterType="engSentence">
         insert into t_english_sentence (eng_word, eng_sentence, file_index) values (#{engWord}, #{engSentence}, #{fileIndex})
     </insert>
+
+    <select id="listByIndex" resultMap="engSentenceResultMap" parameterType="String">
+        select * from t_english_sentence where file_index = #{index}
+    </select>
 </mapper>

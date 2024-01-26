@@ -69,7 +69,7 @@ public class Application {
         System.out.println("3 -> 根据显示的中文翻译成英文句子");
 
         int testType  = scanner.nextInt();
-        EnglishWordsService.doDBTest(index, testType);
+        correctRate = EnglishWordsService.doDBTest(index, testType);
         System.out.println("*** 测试结束 ***");
         System.out.println("正确率：" + correctRate);
     }
