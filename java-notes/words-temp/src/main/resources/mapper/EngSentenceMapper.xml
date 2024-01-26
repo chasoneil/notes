@@ -9,6 +9,7 @@
         <id property="id" column="id"/>
         <result property="engWord" column="eng_word"/>
         <result property="engSentence" column="eng_sentence"/>
+        <result property="fileIndex" column="file_index"/>
     </resultMap>
 
     <select id="listAll" resultMap="engSentenceResultMap">
@@ -16,6 +17,6 @@
     </select>
 
     <insert id="insert" parameterType="engSentence">
-        insert into t_english_sentence (eng_word, eng_sentence) values (#{engWord}, #{engSentence})
+        insert into t_english_sentence (eng_word, eng_sentence, file_index) values (#{engWord}, #{engSentence}, #{fileIndex})
     </insert>
 </mapper>

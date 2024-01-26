@@ -12,4 +12,6 @@ public class EngWords {
     private String means;
 
     private String wordType;
+
+    private String fileIndex;
 }

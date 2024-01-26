@@ -29,6 +29,8 @@ public class EnglishWordsService {
 
     private static SqlSession sqlSession;
 
+    private static String currentIndex = "";
+
     static {
         if (sqlSession == null) {
             sqlSession = MybatisFactory.getSqlSession();
@@ -97,11 +99,13 @@ public class EnglishWordsService {
         engWords.add(engWord);
     }
 
-    public static void save (String line) {
+    public static void save (String line, String index) {
 
         if (line.startsWith("Sentence")) {
             return;
         }
+
+        currentIndex = index;
 
         String[] msgs = line.split("#");
         if (msgs.length == 3) {
@@ -126,11 +130,12 @@ public class EnglishWordsService {
         }
 
         currentWord = msgs[0];
-        currentSentence.put(currentWord, new EngSentence(currentWord));
+        currentSentence.put(currentWord, new EngSentence(currentWord, currentIndex));
         EngWords engWords = new EngWords();
         engWords.setWords(msgs[0]);
         engWords.setMeans(msgs[1]);
         engWords.setWordType(msgs[2]);
+        engWords.setFileIndex(currentIndex);
 
         // insert database
         EngWordMapper mapper = sqlSession.getMapper(EngWordMapper.class);
@@ -146,6 +151,12 @@ public class EnglishWordsService {
         if (sqlSession != null) {
             sqlSession.close();
         }
+    }
+
+    public static String doDBTest (String index, int testType) {
+
+        return null;
+
     }
 
 }

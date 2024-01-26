@@ -30,7 +30,8 @@ public class InitlizeUtil {
     }
 
     public static void initAll() {
-
+        System.out.println("程序构建中,请选择指定文件初始化");
+        System.exit(-1);
     }
 
     public static void initFile () {
@@ -74,7 +75,7 @@ public class InitlizeUtil {
                     }
 
                     if (languageType == 2) {
-                        EnglishWordsService.save(line);
+                        EnglishWordsService.save(line, index);
                     }
                 }
             }

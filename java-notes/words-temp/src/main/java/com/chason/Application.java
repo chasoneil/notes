@@ -38,6 +38,44 @@ public class Application {
 
 
     public static void enWordStarter() {
+
+        Scanner scanner = new Scanner(System.in);
+
+        System.out.println("-> 请选择数据类型： 1 数据库 | 2 文件");
+        int dataType =  scanner.nextInt();
+
+        if (dataType == 1) {
+            System.out.println("!! 数据库存储方式需要数据库支持并提前初始化数据 ！！");
+            doDatabaseTest();
+        }
+
+        if (dataType == 2) {
+            doFileTest();
+        }
+
+
+
+    }
+
+    private static void doDatabaseTest () {
+        Scanner scanner = new Scanner(System.in);
+        System.out.println("-> 请选择测试序列号");
+        String index = scanner.next();
+
+        String correctRate = "0.0%";
+        System.out.println("-> 请输入练习类型：");
+        System.out.println("1 -> 根据英语写出中文含义");
+        System.out.println("2 -> 根据中文含义写出英文");
+        System.out.println("3 -> 根据显示的中文翻译成英文句子");
+
+        int testType  = scanner.nextInt();
+        EnglishWordsService.doDBTest(index, testType);
+        System.out.println("*** 测试结束 ***");
+        System.out.println("正确率：" + correctRate);
+    }
+
+    private static void doFileTest () {
+
         Scanner scanner = new Scanner(System.in);
         System.out.println("-> 请选择文件：（输入文件序列号）");
         String index = scanner.next();
@@ -45,13 +83,12 @@ public class Application {
 
         EnglishWordsService.initData(index);
         String correctRate = "0.0%";
-
         System.out.println("-> 请输入练习类型：");
         System.out.println("1 -> 根据英语写出中文含义");
         System.out.println("2 -> 根据中文含义写出英文");
 
         int testType  = scanner.nextInt();
-        EnglishWordsService.doTest(testType);
+        correctRate = EnglishWordsService.doTest(testType);
         System.out.println("*** 测试结束 ***");
         System.out.println("正确率：" + correctRate);
     }

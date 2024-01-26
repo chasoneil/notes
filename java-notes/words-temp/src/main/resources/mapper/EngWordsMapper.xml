@@ -10,6 +10,7 @@
         <result property="words" column="eng_word"/>
         <result property="means" column="cn_mean"/>
         <result property="wordType" column="word_type"/>
+        <result property="fileIndex" column="file_index"/>
     </resultMap>
 
     <select id="listAll" resultMap="engWordsResultMap">
@@ -17,7 +18,6 @@
     </select>
 
     <insert id="insert" parameterType="engWord">
-        insert into t_english (eng_word, word_type, cn_mean) values
-        (#{words}, #{means}, #{wordType})
+        insert into t_english (eng_word, word_type, cn_mean, file_index) values (#{words}, #{means}, #{wordType}, #{fileIndex})
     </insert>
 </mapper>

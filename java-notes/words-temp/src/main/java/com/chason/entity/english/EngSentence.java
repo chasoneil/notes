@@ -15,13 +15,15 @@ public class EngSentence {
 
     private String engSentence;
 
-    public EngSentence (String engWord, String engSentence) {
-        this.engWord = engWord;
-        this.engSentence = engSentence;
-    }
+    private String fileIndex;
 
     public EngSentence (String engWord) {
         this.engWord = engWord;
+    }
+
+    public EngSentence (String engWord, String index) {
+        this.engWord = engWord;
+        this.fileIndex = index;
     }
 
     public EngSentence() {}
