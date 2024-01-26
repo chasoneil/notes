@@ -1,13 +1,17 @@
 package com.chason.service.english;
 
+import com.alibaba.fastjson.JSON;
+import com.chason.config.MybatisFactory;
+import com.chason.entity.english.EngSentence;
 import com.chason.entity.english.EngWords;
+import com.chason.entity.english.Sentence;
+import com.chason.mapper.EngSentenceMapper;
+import com.chason.mapper.EngWordMapper;
 import com.chason.util.FileUtil;
 import com.chason.util.StringUtil;
+import org.apache.ibatis.session.SqlSession;
 
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Random;
-import java.util.Scanner;
+import java.util.*;
 
 public class EnglishWordsService {
 
@@ -15,7 +19,21 @@ public class EnglishWordsService {
 
     public static final String PRIFIX = "english/words/words_";
 
+    private static Map<String, EngSentence> currentSentence = new HashMap<>();
+
+    private static String currentWord = "";
+
+    private static List<Sentence> st = new ArrayList<>();
+
     private static double correct = 0L;
+
+    private static SqlSession sqlSession;
+
+    static {
+        if (sqlSession == null) {
+            sqlSession = MybatisFactory.getSqlSession();
+        }
+    }
 
     public static String doTest(int type) {
         int size = engWords.size();
@@ -79,12 +97,55 @@ public class EnglishWordsService {
         engWords.add(engWord);
     }
 
-    public void save (String line) {
+    public static void save (String line) {
 
+        if (line.startsWith("Sentence")) {
+            return;
+        }
 
+        String[] msgs = line.split("#");
+        if (msgs.length == 3) {
+            doInsertWord(msgs);
+        }
 
+        if (msgs.length == 2) {
+            doInsertSentence(msgs);
+        }
     }
 
+    private static void doInsertWord (String[] msgs) {
 
+        if (currentSentence.size() > 0) {
+            // insert database
+            EngSentenceMapper sentenceMapper = sqlSession.getMapper(EngSentenceMapper.class);
+            currentSentence.get(currentWord).setEngSentence(JSON.toJSONString(st));
+            sentenceMapper.insert(currentSentence.get(currentWord));
+            sqlSession.commit();
+            st.clear();
+            currentSentence.clear();
+        }
+
+        currentWord = msgs[0];
+        currentSentence.put(currentWord, new EngSentence(currentWord));
+        EngWords engWords = new EngWords();
+        engWords.setWords(msgs[0]);
+        engWords.setMeans(msgs[1]);
+        engWords.setWordType(msgs[2]);
+
+        // insert database
+        EngWordMapper mapper = sqlSession.getMapper(EngWordMapper.class);
+        mapper.insert(engWords);
+        sqlSession.commit();
+    }
+
+    private static void doInsertSentence (String[] msgs) {
+        st.add(new Sentence(msgs[0], msgs[1]));
+    }
+
+    public static void closeSqlSession()  {
+        if (sqlSession != null) {
+            sqlSession.close();
+        }
+    }
 
 }

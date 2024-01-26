@@ -1,0 +1,26 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.chason.mapper.EngWordsMapper">
+
+    <resultMap id="engWordsResultMap" type="engWord">
+        <id property="id" column="id"/>
+        <result property="words" column="eng_word"/>
+        <result property="means" column="cn_mean"/>
+        <result property="wordType" column="word_type"/>
+    </resultMap>
+
+    <select id="selectAll" resultMap="engWordsResultMap">
+        SELECT * FROM t_english
+    </select>
+
+    <insert id="insertEnglishWord" parameterType="com.chason.pojo.EngWords">
+        insert into t_english (
+            eng_word, word_type, cn_mean
+        ) values (
+            #{words}, #{means}, #{wordType}
+        )
+    </insert>
+</mapper>

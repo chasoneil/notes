@@ -2,7 +2,6 @@ package com.chason.util;
 
 import com.chason.Application;
 import com.chason.service.english.EnglishWordsService;
-import com.chason.service.japan.JpFiftyService;
 import com.chason.service.japan.JpWordsService;
 
 import java.io.BufferedReader;
@@ -29,7 +28,6 @@ public class InitlizeUtil {
             initFile();
         }
     }
-
 
     public static void initAll() {
 
@@ -65,6 +63,7 @@ public class InitlizeUtil {
 
         String file = url.getPath();
 
+        System.out.println("开始执行初始化数据...");
         try (BufferedReader br = new BufferedReader(new InputStreamReader(new FileInputStream(file)))) {
             String line = "";
             while ((line = br.readLine()) != null) {
@@ -75,18 +74,14 @@ public class InitlizeUtil {
                     }
 
                     if (languageType == 2) {
-                        EnglishWordsService service = new EnglishWordsService();
-                        service.save(line);
+                        EnglishWordsService.save(line);
                     }
                 }
             }
+            EnglishWordsService.closeSqlSession();
+            System.out.println("数据初始化完成!");
         } catch (Exception e) {
             e.printStackTrace();
         }
-
     }
-
-
-
-
 }
