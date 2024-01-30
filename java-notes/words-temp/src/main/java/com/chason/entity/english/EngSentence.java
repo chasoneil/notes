@@ -1,10 +1,6 @@
 package com.chason.entity.english;
 
-import com.alibaba.fastjson.JSON;
 import lombok.Data;
-
-import java.util.List;
-
 
 @Data
 public class EngSentence {
@@ -14,6 +10,8 @@ public class EngSentence {
     private String engWord;
 
     private String engSentence;
+
+    private String cnMean;
 
     private String fileIndex;
 
@@ -27,9 +25,5 @@ public class EngSentence {
     }
 
     public EngSentence() {}
-
-    public List<Sentence> sentences () {
-        return JSON.parseArray(this.engSentence, Sentence.class);
-    }
 
 }

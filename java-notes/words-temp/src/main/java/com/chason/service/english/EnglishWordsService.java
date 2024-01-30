@@ -1,10 +1,8 @@
 package com.chason.service.english;
 
-import com.alibaba.fastjson.JSON;
 import com.chason.config.MybatisFactory;
 import com.chason.entity.english.EngSentence;
 import com.chason.entity.english.EngWords;
-import com.chason.entity.english.Sentence;
 import com.chason.mapper.EngSentenceMapper;
 import com.chason.mapper.EngWordMapper;
 import com.chason.util.FileUtil;
@@ -15,66 +13,59 @@ import java.util.*;
 
 public class EnglishWordsService {
 
+    private static Random random = new Random();
+
+    private String fileIndex;
+
+    private static int size;
+
     public static List<EngWords> engWords = new ArrayList<>();
 
     public static final String PRIFIX = "english/words/words_";
 
-    private static Map<String, EngSentence> currentSentence = new HashMap<>();
-
-    private static String currentWord = "";
-
-    private static List<Sentence> st = new ArrayList<>();
-
-    private static double correct = 0L;
+    public List<String> cache = new ArrayList<>();
 
     private static SqlSession sqlSession;
 
-    private static String currentIndex = "";
+    private static double correct = 0L;
 
     static {
-        if (sqlSession == null) {
-            sqlSession = MybatisFactory.getSqlSession();
-        }
+        sqlSession = MybatisFactory.getSqlSession();
+    }
+
+    public EnglishWordsService (String fileIndex) {
+        this.fileIndex = fileIndex;
     }
 
     public static String doTest(int type) {
-        int size = engWords.size();
-        int count = size;
 
-        if (type == 1) {
-            System.out.println("---> 请根据英语单词写出中文含义 <---");
-        } else if (type == 2) {
-            System.out.println("---> 请根据中文释义写出英语单词 <---");
-        }
-
-        Random random = new Random();
         Scanner scanner = new Scanner(System.in);
-        while (size > 0) {
-            int index = random.nextInt(size--);
-            EngWords englishWords = engWords.get(index);
-
+        size = engWords.size();
+        while (engWords.size() > 0) {
+            int index = random.nextInt(engWords.size());
+            EngWords engWords = EnglishWordsService.engWords.get(index);
             String res = scanner.next();
             if (type == 1) {
-                System.out.println(englishWords.getWords() + " -> ");
-                if (englishWords.getMeans().contains(res)) {
-                    System.out.println("正确");
+                System.out.println(engWords.getWords() + " -> ");
+                if (engWords.getMeans().contains(res)) {
+                    System.out.println("CORRECT");
                     correct++;
                 } else {
-                    System.err.println("错误");
+                    System.err.println("ERROR");
                 }
             } else if (type == 2) {
-                System.out.println(englishWords.getMeans() + " -> ");
-                if (englishWords.getWords().contains(res)) {
-                    System.out.println("正确");
+                System.out.println(engWords.getMeans() + " -> ");
+                if (engWords.getWords().contains(res)) {
+                    System.out.println("CORRECT");
                     correct++;
                 } else {
-                    System.err.println("错误");
+                    System.err.println("ERROR");
                 }
             }
-            engWords.remove(index);
+            EnglishWordsService.engWords.remove(engWords);
         }
 
-        return (correct / count) * 100 + "%";
+        return (correct / size) * 100 + "%";
     }
 
     public static void initData (String index) {
@@ -82,69 +73,23 @@ public class EnglishWordsService {
     }
 
     public static void resolveData (String line) {
-        EngWords engWord = new EngWords();
 
         String[] msg = line.split("#");
+        if ("END".equalsIgnoreCase(line)) {
+            return;
+        }
         if (msg.length == 2) {
             return;
         }
-
         if (StringUtil.isEmpty(msg[0]) || StringUtil.isEmpty(msg[1]) ||
                 StringUtil.isEmpty(msg[2])) {
             return;
         }
 
+        EngWords engWord = new EngWords();
         engWord.setWords(msg[0]);
         engWord.setMeans(msg[1]);
         engWords.add(engWord);
-    }
-
-    public static void save (String line, String index) {
-
-        if (line.startsWith("Sentence")) {
-            return;
-        }
-
-        currentIndex = index;
-
-        String[] msgs = line.split("#");
-        if (msgs.length == 3) {
-            doInsertWord(msgs);
-        }
-
-        if (msgs.length == 2) {
-            doInsertSentence(msgs);
-        }
-    }
-
-    private static void doInsertWord (String[] msgs) {
-
-        if (currentSentence.size() > 0) {
-            // insert database
-            EngSentenceMapper sentenceMapper = sqlSession.getMapper(EngSentenceMapper.class);
-            currentSentence.get(currentWord).setEngSentence(JSON.toJSONString(st));
-            sentenceMapper.insert(currentSentence.get(currentWord));
-            sqlSession.commit();
-            st.clear();
-            currentSentence.clear();
-        }
-
-        currentWord = msgs[0];
-        currentSentence.put(currentWord, new EngSentence(currentWord, currentIndex));
-        EngWords engWords = new EngWords();
-        engWords.setWords(msgs[0]);
-        engWords.setMeans(msgs[1]);
-        engWords.setWordType(msgs[2]);
-        engWords.setFileIndex(currentIndex);
-
-        // insert database
-        EngWordMapper mapper = sqlSession.getMapper(EngWordMapper.class);
-        mapper.insert(engWords);
-        sqlSession.commit();
-    }
-
-    private static void doInsertSentence (String[] msgs) {
-        st.add(new Sentence(msgs[0], msgs[1]));
     }
 
     public static void closeSqlSession()  {
@@ -155,35 +100,118 @@ public class EnglishWordsService {
 
     public static String doDBTest (String index, int testType) {
 
-        SqlSession sqlSession = MybatisFactory.getSqlSession();
         Scanner scanner = new Scanner(System.in);
 
-        if (testType == 1) {
+        switch (testType) {
+            case 1:
+            case 2:
+                EngWordMapper engWordMapper = sqlSession.getMapper(EngWordMapper.class);
+                List<EngWords> engWords = engWordMapper.listByIndex(index);
+                size = engWords.size();
 
-        } else if (testType == 2) {
+                if (testType == 1) {
+                    System.out.println("-> Please translate to Chinese:");
+                }
 
-        } else if (testType == 3) {
+                if (testType == 2) {
+                    System.out.println("-> Please translate to English:");
+                }
 
-            EngSentenceMapper engWordsMapper = sqlSession.getMapper(EngSentenceMapper.class);
-            List<EngSentence> engSentences = engWordsMapper.listByIndex(index);
-            System.out.println("-> 请根据中文句子翻译成英文");
+                while (engWords.size() > 0) {
 
-            for (EngSentence engSentence : engSentences) {
+                    int idx = random.nextInt(engWords.size());
+                    EngWords words = engWords.get(idx);
 
-                System.out.println("请使用单词：" + engSentence.getEngWord());
-                List<Sentence> sentences = engSentence.sentences();
+                    if (testType == 1) {
+                        System.out.println("-> Word :" + words.getWords() + "（" + words.getWordType() + ")");
+                    }
 
-                for (Sentence sentence : sentences) {
-                    System.out.println("中文：" + sentence.getMean());
-                    String input = scanner.next();
-                    System.out.println("答案：" + sentence.getSentence());
+                    if (testType == 2) {
+                        System.out.println("-> Word :" + words.getMeans() + "（" + words.getWordType() + ")");
+                    }
+
+                    String input = scanner.nextLine();
+
+                    if (testType == 1) {
+                        if (words.getMeans().contains(input)) {
+                            correct++;
+                        } else {
+                            System.err.println("ERROR! Answer:" + words.getMeans());
+                        }
+                    }
+
+                    if (testType == 2) {
+                        if (words.getWords().equalsIgnoreCase(input)) {
+                            correct++;
+                        } else {
+                            System.out.println("Answer:" + words.getWords());
+                        }
+                    }
+
+                    engWords.remove(words);
+                    System.out.println();
+                }
+                return (correct / size) * 100 + "%";
+            case 3:
+                EngSentenceMapper engWordsMapper = sqlSession.getMapper(EngSentenceMapper.class);
+                List<EngSentence> engSentences = engWordsMapper.listByIndex(index);
+
+                System.out.println("-> Please translate sentence:");
+
+                while (engSentences.size() > 0) {
+                    int idx = random.nextInt(engSentences.size());
+                    EngSentence engSentence = engSentences.get(idx);
+                    System.out.println("-> Please use word：" + engSentence.getEngWord());
+                    System.out.println("Chinese :" + engSentence.getCnMean());
+                    System.out.println("Yours :" + scanner.nextLine());
+                    System.out.println("Answer:" + engSentence.getEngSentence());
+                    System.out.println();
+                    engSentences.remove(engSentence);
+
+                }
+                return "Only practice";
+            default:
+                return null;
+        }
+    }
+
+    /**
+     * flush cache to database
+     */
+    public void flush () {
+
+        if (cache.size() == 0) {
+            return;
+        }
+
+        EngSentenceMapper engSentenceMapper = sqlSession.getMapper(EngSentenceMapper.class);
+        EngWordMapper     engWordMapper     = sqlSession.getMapper(EngWordMapper.class);
+        String current = "";
+        for (String line : cache) {
+            if (!"END".equalsIgnoreCase(line)) {
+
+                String[] split = line.split("#");
+                if (split.length == 3) {    // word
+                    current = split[0];
+                    EngWords engWords = new EngWords();
+                    engWords.setWords(split[0]);
+                    engWords.setMeans(split[1]);
+                    engWords.setWordType(split[2]);
+                    engWords.setFileIndex(fileIndex);
+                    engWordMapper.insert(engWords);
+                }
+
+                if (split.length == 2) {    // sentence
+                    EngSentence engSentence = new EngSentence();
+                    engSentence.setEngWord(current);
+                    engSentence.setFileIndex(fileIndex);
+                    engSentence.setEngSentence(split[0]);
+                    engSentence.setCnMean(split[1]);
+                    engSentenceMapper.insert(engSentence);
                 }
             }
         }
-
-
-        return null;
-
+        sqlSession.commit();
     }
 
 }

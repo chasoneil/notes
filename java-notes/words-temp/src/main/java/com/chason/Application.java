@@ -28,7 +28,7 @@ public class Application {
                 }
                 break;
             case 2:
-                enWordStarter();
+                engWordStarter();
                 break;
             default:
                 break;
@@ -37,15 +37,15 @@ public class Application {
     }
 
 
-    public static void enWordStarter() {
+    public static void engWordStarter() {
+
+        System.out.println("-> Please choose storage type： 1 Database | 2 File");
 
         Scanner scanner = new Scanner(System.in);
-
-        System.out.println("-> 请选择数据类型： 1 数据库 | 2 文件");
         int dataType =  scanner.nextInt();
 
         if (dataType == 1) {
-            System.out.println("!! 数据库存储方式需要数据库支持并提前初始化数据 ！！");
+            System.out.println("!! Need Database Support !!");
             doDatabaseTest();
         }
 
@@ -53,44 +53,46 @@ public class Application {
             doFileTest();
         }
 
-
-
     }
 
     private static void doDatabaseTest () {
+
+        System.out.println("-> Please input file index:");
+
         Scanner scanner = new Scanner(System.in);
-        System.out.println("-> 请选择测试序列号");
         String index = scanner.next();
 
         String correctRate = "0.0%";
-        System.out.println("-> 请输入练习类型：");
-        System.out.println("1 -> 根据英语写出中文含义");
-        System.out.println("2 -> 根据中文含义写出英文");
-        System.out.println("3 -> 根据显示的中文翻译成英文句子");
+        System.out.println("-> Please input practice：");
+        System.out.println("1 -> translate English word to Chinese.");
+        System.out.println("2 -> translate Chinese word to English.");
+        System.out.println("3 -> do sentence practice by word.");
 
         int testType  = scanner.nextInt();
         correctRate = EnglishWordsService.doDBTest(index, testType);
-        System.out.println("*** 测试结束 ***");
-        System.out.println("正确率：" + correctRate);
+        System.out.println("*** Test Finished ***");
+        System.out.println("Correct Rate：" + correctRate);
     }
 
     private static void doFileTest () {
 
         Scanner scanner = new Scanner(System.in);
-        System.out.println("-> 请选择文件：（输入文件序列号）");
+        System.out.println("-> Please input file index:");
         String index = scanner.next();
-        System.out.println("-> 执行测试初始化");
 
+        System.out.println("-> initializing data...");
         EnglishWordsService.initData(index);
+
         String correctRate = "0.0%";
-        System.out.println("-> 请输入练习类型：");
-        System.out.println("1 -> 根据英语写出中文含义");
-        System.out.println("2 -> 根据中文含义写出英文");
+        System.out.println("-> Please input practice：");
+        System.out.println("1 -> translate English word to Chinese.");
+        System.out.println("2 -> translate Chinese word to English.");
 
         int testType  = scanner.nextInt();
         correctRate = EnglishWordsService.doTest(testType);
-        System.out.println("*** 测试结束 ***");
-        System.out.println("正确率：" + correctRate);
+
+        System.out.println("*** Test Finished ***");
+        System.out.println("Correct Rate：" + correctRate);
     }
 
     // fifty_01

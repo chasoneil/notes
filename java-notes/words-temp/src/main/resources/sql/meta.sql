@@ -28,8 +28,10 @@ create table t_english (
 
 create table t_english_sentence (
     id int primary key auto_increment,
-    eng_word varchar(255) not null unique comment '英文单词',
-    eng_sentence text not null,
+    eng_word varchar(255) not null comment '英文单词',
+    eng_sentence text not null comment '英文句子',
+    cn_mean text not null comment '中文翻译',
     file_index varchar(8) not null,
-    index idx_fIdx (`file_index`)
+    index idx_fIdx (`file_index`),
+    index idx_word (`eng_word`)
 );

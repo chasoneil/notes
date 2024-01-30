@@ -67,18 +67,20 @@ public class InitlizeUtil {
         System.out.println("开始执行初始化数据...");
         try (BufferedReader br = new BufferedReader(new InputStreamReader(new FileInputStream(file)))) {
             String line = "";
-            while ((line = br.readLine()) != null) {
-                if (CheckUtil.checkLine(line)) {
+            if (languageType == 1) {
 
-                    if (languageType == 1) {
+            }
 
-                    }
-
-                    if (languageType == 2) {
-                        EnglishWordsService.save(line, index);
+            if (languageType == 2) {
+                EnglishWordsService service = new EnglishWordsService(index);
+                while ((line = br.readLine()) != null) {
+                    if (CheckUtil.checkLine(line)) {
+                        service.cache.add(line);
                     }
                 }
+                service.flush();
             }
+
             EnglishWordsService.closeSqlSession();
             System.out.println("数据初始化完成!");
         } catch (Exception e) {

@@ -10,6 +10,5 @@ public interface EngSentenceMapper {
 
     List<EngSentence> listAll();
 
-
     List<EngSentence> listByIndex(String index);
 }

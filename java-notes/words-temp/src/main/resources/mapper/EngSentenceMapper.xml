@@ -9,6 +9,7 @@
         <id property="id" column="id"/>
         <result property="engWord" column="eng_word"/>
         <result property="engSentence" column="eng_sentence"/>
+        <result property="cnMean" column="cn_mean"/>
         <result property="fileIndex" column="file_index"/>
     </resultMap>
 
@@ -17,7 +18,7 @@
     </select>
 
     <insert id="insert" parameterType="engSentence">
-        insert into t_english_sentence (eng_word, eng_sentence, file_index) values (#{engWord}, #{engSentence}, #{fileIndex})
+        insert into t_english_sentence (eng_word, eng_sentence, cn_mean, file_index) values (#{engWord}, #{engSentence}, #{cnMean}, #{fileIndex})
     </insert>
 
     <select id="listByIndex" resultMap="engSentenceResultMap" parameterType="String">

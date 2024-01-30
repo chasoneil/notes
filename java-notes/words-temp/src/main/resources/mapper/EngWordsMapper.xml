@@ -18,6 +18,10 @@
     </select>
 
     <insert id="insert" parameterType="engWord">
-        insert into t_english (eng_word, word_type, cn_mean, file_index) values (#{words}, #{means}, #{wordType}, #{fileIndex})
+        insert into t_english (eng_word, word_type, cn_mean, file_index) values (#{words}, #{wordType}, #{means}, #{fileIndex})
     </insert>
+
+    <select id="listByIndex" resultMap="engWordsResultMap" parameterType="String">
+        SELECT * FROM t_english where file_index = #{index}
+    </select>
 </mapper>
