@@ -69,7 +69,7 @@ public class FileUtil {
                             JpFiftyService.resolveData(line);
                             break;
                         case 2:
-                            JpWordsService.resolveData(line);
+                            JpWordsService.resolveData(line, false);
                             break;
                         case 3:
                             EnglishWordsService.resolveData(line);

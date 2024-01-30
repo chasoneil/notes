@@ -39,7 +39,7 @@ public class InitlizeUtil {
         Scanner scanner = new Scanner(System.in);
 
         System.out.println("****执行指定文件初始化****");
-        System.out.println("-> 请输入初始化的语言类型： 1 日语 | 2 英语");
+        System.out.println("-> 请输入初始化的语言类型： 1 日本語 | 2 English");
 
         int languageType = scanner.nextInt();
 
@@ -68,7 +68,13 @@ public class InitlizeUtil {
         try (BufferedReader br = new BufferedReader(new InputStreamReader(new FileInputStream(file)))) {
             String line = "";
             if (languageType == 1) {
-
+                JpWordsService service = new JpWordsService(index);
+                while ((line = br.readLine()) != null) {
+                    if (CheckUtil.checkLine(line)) {
+                        service.cache.add(line);
+                    }
+                }
+                service.flush();
             }
 
             if (languageType == 2) {

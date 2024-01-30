@@ -10,11 +10,21 @@ public class JpWordsService {
 
     private static Random random = new Random();
 
+    public List<String> cache = new ArrayList<>();
+
+    private String fileIndex;
+
     private static double correct = 0L;
 
     public static final String PREFIX = "japan/words/words_";
 
     public static List<JpWords> words = new ArrayList<>();
+
+    public JpWordsService () {}
+
+    public JpWordsService (String index) {
+        this.fileIndex = index;
+    }
 
     public static void initWordsData (String index) {
         FileUtil.initData(index, 2);
@@ -125,7 +135,7 @@ public class JpWordsService {
         words.remove(index);
     }
 
-    public static void resolveData (String line) {
+    public static void resolveData (String line, boolean isDatabase) {
 
         JpWords jpWords = new JpWords();
 
@@ -135,12 +145,16 @@ public class JpWordsService {
         }
 
         if (StringUtil.isEmpty(msg[0]) || StringUtil.isEmpty(msg[1]) ||
-            StringUtil.isEmpty(msg[2])) {
+                StringUtil.isEmpty(msg[2])) {
             return;
         }
 
         jpWords.setJpRead(msg[0]);
         jpWords.setJpWrite(msg[1]);
+
+        if (isDatabase) {
+            System.out.println("构建中...");
+        }
 
         String means = msg[2];
         String[] readStr = means.split(":");
@@ -151,6 +165,20 @@ public class JpWordsService {
 
         jpWords.setChMeans(tar);
         words.add(jpWords);
+    }
+
+    /**
+     * flush japan words to database
+     */
+    public void flush () {
+
+        if (cache.size() == 0) {
+            return;
+        }
+
+        for (String line : cache) {
+            resolveData(line, true);
+        }
     }
 
 }
