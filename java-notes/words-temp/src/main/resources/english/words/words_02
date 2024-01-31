@@ -5,9 +5,15 @@ enterprise#企业，事业单位，事业
 unify#成为一体，统一的
 modeling#模型的，模型制造
 unified modeling language(UML)#统一建模语言
-principle#原则，行为准则（n）
 
-responsibility#责任，负责，职责#名词
-Sentence:
-We are recruiting a sales manager with responsibility for European market#我们正在招聘负责欧洲市场的销售经理
-The bank refused to accept responsibility for the mistake#银行拒绝为这个错误承担责任
+
+// 2024-01-31
+ordinary#普通的，平常的，一般的，平凡的#形容词
+in the ordinary way#一般而言，普通的来说（俚语）
+This was no ordinary meeting#这是个不同寻常的会议
+in the ordinary course of events#在一般情况下
+I'm looking for something a little more out of ordinary#我正在找稍微有些不寻常的东西
+
+schema#概要，大纲#名词
+The XML document is checked against a very restrictive schema#这个XML文档是由一个限制很严格的模式进行检查的
+database schema#数据库模式，数据库架构（专业词汇）

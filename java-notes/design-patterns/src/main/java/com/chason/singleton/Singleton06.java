@@ -4,6 +4,7 @@ import java.io.Serializable;
 
 /**
  * 双重检查锁的单例  但是支持序列化
+ * 会被序列化破坏单例
  */
 public class Singleton06 implements Serializable {
 
@@ -21,6 +22,15 @@ public class Singleton06 implements Serializable {
                 }
             }
         }
+        return instance;
+    }
+
+    /**
+     * solve serialize destroy singleton
+     * method name must be readResolve
+     * @return
+     */
+    private Object readResolve () {
         return instance;
     }
 
