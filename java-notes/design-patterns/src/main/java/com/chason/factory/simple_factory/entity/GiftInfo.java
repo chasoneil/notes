@@ -1,9 +1,9 @@
-package com.chason.factory.schema01.entity;
+package com.chason.factory.simple_factory.entity;
 
 import lombok.Data;
 
 /**
- * small Gift
+ * small GiftFreeGoods
  */
 @Data
 public class GiftInfo {

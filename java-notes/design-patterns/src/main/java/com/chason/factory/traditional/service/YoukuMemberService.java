@@ -1,4 +1,4 @@
-package com.chason.factory.schema01.service;
+package com.chason.factory.traditional.service;
 
 public class YoukuMemberService {
 

@@ -1,11 +1,11 @@
-package com.chason.factory.schema01.controller;
+package com.chason.factory.traditional.controller;
 
-import com.chason.factory.schema01.entity.AwardInfo;
-import com.chason.factory.schema01.entity.DiscountResult;
-import com.chason.factory.schema01.entity.GiftInfo;
-import com.chason.factory.schema01.service.DiscountService;
-import com.chason.factory.schema01.service.GiftService;
-import com.chason.factory.schema01.service.YoukuMemberService;
+import com.chason.factory.traditional.entity.AwardInfo;
+import com.chason.factory.traditional.entity.DiscountResult;
+import com.chason.factory.traditional.entity.GiftInfo;
+import com.chason.factory.traditional.service.DiscountService;
+import com.chason.factory.traditional.service.GiftService;
+import com.chason.factory.traditional.service.YoukuMemberService;
 
 import java.util.UUID;
 

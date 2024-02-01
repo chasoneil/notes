@@ -1,7 +1,7 @@
 package com.chason.factory.test;
 
-import com.chason.factory.schema01.controller.DeliverController;
-import com.chason.factory.schema01.entity.AwardInfo;
+import com.chason.factory.traditional.controller.DeliverController;
+import com.chason.factory.traditional.entity.AwardInfo;
 import org.junit.Test;
 
 import java.util.HashMap;

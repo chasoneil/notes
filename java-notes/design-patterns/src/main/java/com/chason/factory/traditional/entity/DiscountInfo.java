@@ -1,4 +1,4 @@
-package com.chason.factory.schema01.entity;
+package com.chason.factory.traditional.entity;
 
 /**
  * discount  打折券的信息

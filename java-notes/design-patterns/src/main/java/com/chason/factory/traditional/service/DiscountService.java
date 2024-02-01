@@ -1,6 +1,6 @@
-package com.chason.factory.schema01.service;
+package com.chason.factory.traditional.service;
 
-import com.chason.factory.schema01.entity.DiscountResult;
+import com.chason.factory.traditional.entity.DiscountResult;
 
 /**
  *
