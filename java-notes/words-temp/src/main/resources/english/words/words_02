@@ -1,9 +1,20 @@
 // 英语单词  每个文档 最多10个单词
 
-
-unify#成为一体，统一的
-modeling#模型的，模型制造
-unified modeling language(UML)#统一建模语言
+/*
+1. ordinary
+2. schema
+3. enthusiastic
+4. self-driven
+5. terms
+6. privacy policy
+7. safeguard
+8. inaccurate
+9. inaccuracy
+10. be intended to
+11. self-introduction
+12. thrilled
+13. profession
+*/
 
 // 2024-01-31
 ordinary#普通的，平常的，一般的，平凡的#形容词
@@ -32,11 +43,19 @@ privacy policy#隐私政策#名词（专业词汇）
 Google has finally add a link to its privacy policy on its home page#谷歌最终还是在他们的主页上加了个隐私条款的链接
 END
 
-safeguards
+safeguard#保护，保卫#动词
+The new card will safeguard the company against fraud#新卡将保护公司免受诈骗
+END
 
-inaccurate
+inaccurate#不准确的，不精确的，有错误的#形容词
+All the maps we had were wildly inaccurate#我们所有地图误差都很大
+END
 
-be intended to
+inaccuracy#错误，不精确#名词
+The article is full of inaccuracies#这篇文章充满了错误
+
+be intended to#打算，意图去做#动词
+I am intended to#我打算做
 
 self-introduction#自我介绍#名词
 

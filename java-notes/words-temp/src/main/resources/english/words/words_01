@@ -1,10 +1,60 @@
-continuous#持续的
-integration#集成，整合
-mutable#可变的，变化的
-delivery#传送，传递（货物、信件），交付
-immutable#永恒的，不可变的
-assign#分派，分配（任务、工作）指定，指派
+
+// 2024-02-05
+
+/**
+1. continuous
+2. integrate
+3. integration
+4. mutable
+5. delivery
+6. immutable
+7. assign
+8.
+*/
+
+
+
+
 transform#改变（外观、人生）一般指变好，使改观，使改变形态
 concatenate#连接，拼接，使串联，把...连成一串
 preferable#更好的，更合适的，更推荐的
 
+continuous#持续的，不断的，连续的#形容词
+The rain has been continuous since this morning#从今天早上开始这雨就没停过
+She was in continuous employment until the age of sixty-five#他连续不断的受雇佣直到65岁
+
+integrate#合并，成为一体#动词
+These programs will integrate with your existing software#这些程序将和你的已有软件合并综合
+
+#integrate#加入，融入群体#动词
+They have not made any effort to integrate with local community#他们完全没有尝试融入本地社区
+END
+
+integration#结合，整合，一体化#名词
+The aim is to promote closer economic integration#目的是进一步促进经济一体化
+END
+
+mutable#可变的，会变的#形容词
+These all can be done with no mutable state in the client code#所有这些都可以在客户端代码中没有可变状态的情况下完成
+A mutable variable is declared with the keyword var#一个变量可以通过关键字var声明
+
+delivery#传送，交付#名词
+Please pay for goods on delivery#请货到付款
+Allow 28 days for delivery#预留28天时间送货
+
+delivery#分娩#名词
+A delivery room#产房
+
+delivery#演讲方式，表演风格#名词
+The beautiful poetry was ruined by her poor delivery#这优美的诗被她拙劣的朗诵糟蹋了
+END
+
+immutable#不变的，永恒的#形容词
+This setting is immutable#这个设定不可更改
+END
+
+assign#分配（某人某物），分派（任务）#动词
+The two large classroom have been assigned to us#这两间大教室被分配给我们使用
+END
+
+transform
