@@ -4,7 +4,6 @@ import com.chason.factory.factory_method.factory.FreeGoodsFactoryMap;
 import com.chason.factory.factory_method.factory.IFreeGoodsFactory;
 import com.chason.factory.simple_factory.entity.AwardInfo;
 import com.chason.factory.simple_factory.entity.ResponseResult;
-import com.chason.factory.simple_factory.factory.FreeGoodsFactory;
 import com.chason.factory.simple_factory.service.IFreeGoods;
 
 public class DeliverController {

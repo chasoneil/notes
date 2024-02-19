@@ -15,7 +15,6 @@ public class Singleton02 {
     public static Singleton02 getInstance() {
 
         // 多线程的时候会有线程安全的问题
-
         if (instance == null) {
             instance = new Singleton02();
         }

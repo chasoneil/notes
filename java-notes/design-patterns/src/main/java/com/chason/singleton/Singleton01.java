@@ -18,7 +18,7 @@ public class Singleton01 {
      */
     private Singleton01() {
         if (instance != null) {
-            throw new RuntimeException("Illegal Operate for \"private\"");
+            throw new RuntimeException("Illegal Operate for private");
         }
     }
 
